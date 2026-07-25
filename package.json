@@ -1,0 +1,46 @@
+{
+  "name": "@red-cup-engineering/settlement-triggered-activity-publication-cell",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Advances one durable ActivityPub pulse from one independently finalized commitment on a configured EVM chain.",
+  "bin": {
+    "advance-settlement-pulse": "./bin/advance-settlement-pulse.mjs",
+    "serve-settlement-pulse-activitypub": "./bin/activitypub-server.mjs"
+  },
+  "exports": {
+    ".": "./src/advance-settlement-pulse.mjs",
+    "./runtime": "./src/runtime.mjs"
+  },
+  "scripts": {
+    "test": "node --test",
+    "verify": "node --check src/advance-settlement-pulse.mjs && node --check src/runtime.mjs && node --check src/a2a-executor.mjs && node --check bin/advance-settlement-pulse.mjs && node --check bin/activitypub-server.mjs && node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@emsenn/a2a-contracted-agent-service": "file:../../../web-services-section/services/a2a-services-section/services/a2a-contracted-agent-service",
+    "@emsenn/activitypub-services-section": "file:../../../web-services-section/services/activitypub-services-section",
+    "@emsenn/rmn-semantic-conformance": "file:../../../../../lenticule-science/services/obsmetrological-services-section/services/rmn-semantic-conformance",
+    "@emsenn/rwil-rdf-services": "file:../../../../../lenticule-science/services/obsmetrological-services-section/services/rwil-rdf-services",
+    "@fedify/vocab": "2.3.1"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "settlement-triggered-activity-publication-cell",
+    "actor": "urn:ame:settlement-triggered-activity-publication-cell",
+    "organizational-kind": "blockchain-capability-cell",
+    "owners": [
+      "blockchain-services-section"
+    ],
+    "operation-catalog": {
+      "advance-settlement-pulse": {
+        "chain": "deployment parameter: EVM CAIP-2",
+        "activityPubActor": "deployment parameter: HTTPS actor URL",
+        "taskProtocol": "A2A 1.0",
+        "memory": "hired RWIL/RDF provider",
+        "publication": "hired ActivityPub provider"
+      }
+    }
+  }
+}

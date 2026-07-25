@@ -1,0 +1,27 @@
+{
+  "id": "ni:///sha-256;xD99GvwJPkbs6UJMrhJp9PxibQhlJl8GX7OD2Xd1shA",
+  "type": "StockKeepingUnit",
+  "schema": "urn:emsenn:schema:stock-keeping-unit:2026-07-24",
+  "sku": "settlement-triggered-activity-publication-cell.advance-settlement-pulse.advance-settlement-pulse.AHba3pV5",
+  "producer": {
+    "actor": "urn:ame:settlement-triggered-activity-publication-cell",
+    "nodeId": "settlement-triggered-activity-publication-cell"
+  },
+  "product": {
+    "name": "Settlement-triggered Activity Publication",
+    "kind": "service-invocation",
+    "contract": {
+      "id": "advance-settlement-pulse",
+      "law": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64"
+    },
+    "operation": "advance-settlement-pulse",
+    "description": "Publish one deterministic durable ActivityStreams successor pulse from one independently finalized typed EVM commitment."
+  },
+  "denominations": [
+    "relative-resolution-milliquanta-v1"
+  ],
+  "pricing": {
+    "intrinsicPrice": null,
+    "priceFormation": "counterparty-border-offer"
+  }
+}

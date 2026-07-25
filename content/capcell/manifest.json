@@ -1,0 +1,20 @@
+{
+  "type": "CapabilityCellManifest",
+  "version": 2,
+  "sku": "ni:///sha-256;xD99GvwJPkbs6UJMrhJp9PxibQhlJl8GX7OD2Xd1shA",
+  "capability": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64",
+  "controller": "did:pkh:eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a",
+  "faces": {
+    "activitypub": {
+      "actor": "https://bare-cedar-fog.561.group/actors/settlement-pulse",
+      "outbox": "https://bare-cedar-fog.561.group/actors/settlement-pulse/outbox"
+    },
+    "a2a": {
+      "agentCard": "https://bare-cedar-fog.561.group/a2a/settlement-pulse/.well-known/agent-card.json"
+    },
+    "evm": {
+      "network": "eip155:5615610",
+      "account": "eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "name": "Settlement-triggered Activity Publication Cell",
+  "description": "Advances one deterministic public ActivityPub pulse from one independently assayed final EVM commitment.",
+  "supportedInterfaces": [
+    {
+      "url": "${BASE_URL}/a2a/jsonrpc",
+      "protocolBinding": "JSONRPC",
+      "tenant": "",
+      "protocolVersion": "1.0"
+    },
+    {
+      "url": "${BASE_URL}/a2a/rest",
+      "protocolBinding": "HTTP+JSON",
+      "tenant": "",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "provider": {
+    "url": "https://github.com/red-cup-engineering/settlement-triggered-activity-publication-cell",
+    "organization": "Red Cup Engineering"
+  },
+  "version": "0.1.0",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extensions": [
+      {
+        "uri": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64",
+        "description": "Exact network-neutral law for settlement-triggered ActivityStreams publication.",
+        "required": false,
+        "params": {
+          "profile": "org.emsenn.settlement-triggered-activity-publication.cell.v1",
+          "actor": "urn:ame:settlement-triggered-activity-publication-cell",
+          "cell": "ni:///sha-256;Sru5ZrHDT4qtByN8UQCPMKfk4-lTQpE0fI0aAWvfo-4",
+          "law": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64",
+          "sku": "ni:///sha-256;xD99GvwJPkbs6UJMrhJp9PxibQhlJl8GX7OD2Xd1shA",
+          "account": "eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a"
+        }
+      }
+    ],
+    "extendedAgentCard": false
+  },
+  "securitySchemes": {},
+  "securityRequirements": [],
+  "defaultInputModes": [
+    "application/rmn+cbor"
+  ],
+  "defaultOutputModes": [
+    "application/rmn+cbor"
+  ],
+  "skills": [
+    {
+      "id": "advance-settlement-pulse",
+      "name": "Advance settlement pulse",
+      "description": "Publish one deterministic successor ActivityStreams act from one exact positive finality assay and matching TypedCommitment.",
+      "tags": [
+        "activitypub",
+        "evm",
+        "settlement",
+        "durable-workflow"
+      ],
+      "examples": [],
+      "inputModes": [
+        "application/rmn+cbor"
+      ],
+      "outputModes": [
+        "application/rmn+cbor"
+      ],
+      "securityRequirements": []
+    }
+  ],
+  "signatures": []
+}

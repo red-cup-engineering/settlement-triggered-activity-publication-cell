@@ -1,0 +1,37 @@
+{
+  "type": "CapabilityCellObservedProjection",
+  "version": 2,
+  "identity": {
+    "sku": "ni:///sha-256;xD99GvwJPkbs6UJMrhJp9PxibQhlJl8GX7OD2Xd1shA",
+    "capability": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64",
+    "controller": "did:pkh:eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a",
+    "cell": "ni:///sha-256;Sru5ZrHDT4qtByN8UQCPMKfk4-lTQpE0fI0aAWvfo-4",
+    "manifestRevision": "ni:///sha-256;vrSMp89OUx3f-pykhEIvYI1jug2P16-s72BHuum2qbE"
+  },
+  "activityPub": {
+    "actor": "https://bare-cedar-fog.561.group/actors/settlement-pulse",
+    "outbox": "https://bare-cedar-fog.561.group/actors/settlement-pulse/outbox",
+    "latestObservedActivity": "https://bare-cedar-fog.561.group/activities/eip155%3A5615610/3770c8f868998c038406b49e76e12f66cf53c2bebc1ecd16c6f36c9924621e93/3"
+  },
+  "a2aAgent": {
+    "protocol": "A2A",
+    "protocolVersion": "1.0",
+    "agentCard": "https://bare-cedar-fog.561.group/a2a/settlement-pulse/.well-known/agent-card.json",
+    "signature": "EdDSA",
+    "signatureCount": 1
+  },
+  "chainSmartAccount": {
+    "network": "eip155:5615610",
+    "account": "eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a",
+    "deployedCodeBytes": 5093,
+    "provisioningUserOperation": "0xed626ea07a77fa6ed833289daf8d88161d4e69dd5466768c3618adcfcd07c413",
+    "deploymentTransaction": "0x9fa5d24bf7f8082d8ef0d0a3a59f124ddbc5c1411609ee4f5a187b9205e4a6ca",
+    "deploymentBlock": 26
+  },
+  "identityVerification": {
+    "receipt": "ni:///sha-256;VlKQQXv7kKXYp74mQP2huuBNO4VpvtY3Jl3y9OJXNFA",
+    "profile": "capcell",
+    "disposition": "admitted",
+    "missingRequiredBindings": []
+  }
+}
