@@ -1,0 +1,64 @@
+{
+  "denomination": {
+    "kind": "credit",
+    "asset": "urn:union:credit:relative-resolution-milliquanta-v1",
+    "unit": "relative-resolution-milliquanta-v1"
+  },
+  "resourceLots": [
+    {
+      "resource": "cpu-millisecond",
+      "quantity": {
+        "numerator": "428",
+        "denominator": "1"
+      },
+      "unitRate": {
+        "kind": "credit",
+        "asset": "urn:union:credit:relative-resolution-milliquanta-v1",
+        "unit": "relative-resolution-milliquanta-v1",
+        "amount": {
+          "numerator": "1",
+          "denominator": "100"
+        }
+      }
+    }
+  ],
+  "boundaryCosts": [
+    {
+      "boundary": "independent-finality-assay",
+      "consideration": {
+        "kind": "credit",
+        "asset": "urn:union:credit:relative-resolution-milliquanta-v1",
+        "unit": "relative-resolution-milliquanta-v1",
+        "amount": {
+          "numerator": "1",
+          "denominator": "1"
+        }
+      }
+    },
+    {
+      "boundary": "public-activity-delivery",
+      "consideration": {
+        "kind": "credit",
+        "asset": "urn:union:credit:relative-resolution-milliquanta-v1",
+        "unit": "relative-resolution-milliquanta-v1",
+        "amount": {
+          "numerator": "1",
+          "denominator": "1"
+        }
+      }
+    }
+  ],
+  "verifiedDeliveryProbability": {
+    "numerator": "2",
+    "denominator": "3"
+  },
+  "marginRate": {
+    "numerator": "1",
+    "denominator": "5"
+  },
+  "quoteIncrement": {
+    "numerator": "1",
+    "denominator": "1"
+  },
+  "evidenceQuality": "alpha-declared-unit-rates"
+}

@@ -6,12 +6,17 @@
     "capability": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64",
     "controller": "did:pkh:eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a",
     "cell": "ni:///sha-256;Sru5ZrHDT4qtByN8UQCPMKfk4-lTQpE0fI0aAWvfo-4",
-    "manifestRevision": "ni:///sha-256;vrSMp89OUx3f-pykhEIvYI1jug2P16-s72BHuum2qbE"
+    "manifestRevision": "ni:///sha-256;5YM4JydNo1p_yHySDYXDZ_Aoz_PMBIRsVRz7gRIosfY"
+  },
+  "repository": {
+    "url": "https://github.com/red-cup-engineering/settlement-triggered-activity-publication-cell",
+    "commit": "e65c65f5fca5ed49b4a01cd6aeb5d0f0cf539bb7",
+    "publiclyDereferenced": true
   },
   "activityPub": {
     "actor": "https://bare-cedar-fog.561.group/actors/settlement-pulse",
     "outbox": "https://bare-cedar-fog.561.group/actors/settlement-pulse/outbox",
-    "latestObservedActivity": "https://bare-cedar-fog.561.group/activities/eip155%3A5615610/3770c8f868998c038406b49e76e12f66cf53c2bebc1ecd16c6f36c9924621e93/3"
+    "latestObservedActivity": "https://bare-cedar-fog.561.group/activities/eip155%3A5615610/c4c8452a168005677a6cb82a84c628752eb60233aa9c1c6da45387dfb6cba015/2"
   },
   "a2aAgent": {
     "protocol": "A2A",
@@ -28,8 +33,26 @@
     "deploymentTransaction": "0x9fa5d24bf7f8082d8ef0d0a3a59f124ddbc5c1411609ee4f5a187b9205e4a6ca",
     "deploymentBlock": 26
   },
+  "x402": {
+    "resource": "https://bare-cedar-fog.561.group/x402/settlement-pulse/invoke",
+    "network": "eip155:5615610",
+    "asset": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+    "atomicAmount": "12",
+    "customer": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+    "sellerBalanceAfter": "24",
+    "settlementTransaction": "0x9d59a42a09c4299eef7d34152552f8ef4f7148cacde0834fd3153474ab7141bc",
+    "settlementSuccess": true
+  },
+  "customerInvocation": {
+    "protocol": "x402 v2 over public HTTPS",
+    "status": 202,
+    "disposition": "accepted",
+    "invocation": "sha256:58cbba29feec70b643b49fa2bfe470fe59cc532062b735aaa2d9e29b506b30af",
+    "result": "delivered-after-settlement",
+    "activity": "https://bare-cedar-fog.561.group/activities/eip155%3A5615610/c4c8452a168005677a6cb82a84c628752eb60233aa9c1c6da45387dfb6cba015/2"
+  },
   "identityVerification": {
-    "receipt": "ni:///sha-256;VlKQQXv7kKXYp74mQP2huuBNO4VpvtY3Jl3y9OJXNFA",
+    "receipt": "ni:///sha-256;YkO1vrgVWG5qJPMrYEBHFA4avKoin4uAaRhQLS7p8b0",
     "profile": "capcell",
     "disposition": "admitted",
     "missingRequiredBindings": []

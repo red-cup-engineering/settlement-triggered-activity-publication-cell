@@ -1,0 +1,35 @@
+{
+  "type": "SettlementTriggeredActivityPublicationDemand",
+  "chain": "eip155:5615610",
+  "actor": "https://bare-cedar-fog.561.group/actors/settlement-pulse",
+  "recipient": "https://www.w3.org/ns/activitystreams#Public",
+  "finalityAssay": {
+    "type": "ReceiptFinalityPolicyAssay",
+    "positiveEvidence": true,
+    "negativeEvidence": false,
+    "result": {
+      "chainId": "eip155:5615610",
+      "blockHash": "0xc4c8452a168005677a6cb82a84c628752eb60233aa9c1c6da45387dfb6cba015",
+      "transactionHash": "0xbc7e1df13cb69aa1db7fe7c403177437925d07e16af63bd4a376e373155de93e",
+      "logIndex": 2,
+      "blockNumber": 32,
+      "observedThrough": 32,
+      "boundaryKind": "confirmation-threshold",
+      "settlingRegime": "scott-continuous",
+      "finalityPolicy": "eip155-5615610-one-canonical-inclusion",
+      "positiveEvidence": true,
+      "negativeEvidence": false
+    }
+  },
+  "commitment": {
+    "type": "TypedCommitment",
+    "rmnAct": "ni:///sha-256;SDBuxF8ecRG6NVvc1xtvFQ_PAvYu4c2FsAYPQLJTSOE",
+    "predicate": "ni:///sha-256;DnVlM2dmmgCeTUwlxeGXuZRa2B4O1GYS3gr6DKYgeyE",
+    "subject": "ni:///sha-256;Sru5ZrHDT4qtByN8UQCPMKfk4-lTQpE0fI0aAWvfo-4",
+    "object": "ni:///sha-256;YHLAYvxJVeUm8dxv1JlRKchKAHR_Ydst1iULZoW1lN0",
+    "evidenceRoot": "ni:///sha-256;UQ0GPThxXMbr9iGvwrggva63t6rJHLp1Vu2ULCOlmuM",
+    "transactionHash": "0xbc7e1df13cb69aa1db7fe7c403177437925d07e16af63bd4a376e373155de93e",
+    "blockHash": "0xc4c8452a168005677a6cb82a84c628752eb60233aa9c1c6da45387dfb6cba015",
+    "logIndex": 2
+  }
+}

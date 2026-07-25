@@ -5,12 +5,24 @@
   "capability": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64",
   "controller": "did:pkh:eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a",
   "faces": {
+    "github": {
+      "repository": "https://github.com/red-cup-engineering/settlement-triggered-activity-publication-cell",
+      "commit": "e65c65f5fca5ed49b4a01cd6aeb5d0f0cf539bb7"
+    },
     "activitypub": {
       "actor": "https://bare-cedar-fog.561.group/actors/settlement-pulse",
       "outbox": "https://bare-cedar-fog.561.group/actors/settlement-pulse/outbox"
     },
     "a2a": {
       "agentCard": "https://bare-cedar-fog.561.group/a2a/settlement-pulse/.well-known/agent-card.json"
+    },
+    "x402": {
+      "resource": "https://bare-cedar-fog.561.group/x402/settlement-pulse/invoke",
+      "scheme": "exact",
+      "network": "eip155:5615610",
+      "asset": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      "payTo": "0xca7f2b2460cdd46839e177a8648f5cdff7c8713a",
+      "amount": "12"
     },
     "evm": {
       "network": "eip155:5615610",
