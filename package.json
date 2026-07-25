@@ -15,12 +15,13 @@
   },
   "scripts": {
     "test": "node --test",
-    "verify": "node --check src/advance-settlement-pulse.mjs && node --check src/runtime.mjs && node --check src/a2a-executor.mjs && node --check bin/advance-settlement-pulse.mjs && node --check bin/activitypub-server.mjs && node --check bin/x402-server.mjs && node --test"
+    "verify": "node --check src/contracts.mjs && node --check src/advance-settlement-pulse.mjs && node --check src/runtime.mjs && node --check src/a2a-executor.mjs && node --check bin/advance-settlement-pulse.mjs && node --check bin/activitypub-server.mjs && node --check bin/x402-server.mjs && node --test"
   },
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
+    "@cfworker/json-schema": "4.1.1",
     "@emsenn/a2a-contracted-agent-service": "file:../../../web-services-section/services/a2a-services-section/services/a2a-contracted-agent-service",
     "@emsenn/activitypub-services-section": "file:../../../web-services-section/services/activitypub-services-section",
     "@emsenn/x402-services-section": "file:../../../web-services-section/services/x402-services-section",

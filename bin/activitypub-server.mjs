@@ -1,6 +1,13 @@
 #!/usr/bin/env node
 
+import { readFile } from "node:fs/promises";
 import { serveActivityPubProvider } from "@emsenn/activitypub-services-section/server";
+import {
+  ACTIVITYSTREAMS_PUBLIC,
+  materializeRmnActivity,
+} from "@emsenn/activitypub-services-section/rmn-activity";
+import { semanticBytes } from "@emsenn/rmn-semantic-conformance";
+import { encodeRelationalValue } from "@emsenn/rmn-semantic-conformance/relational-value";
 import {
   createPulseHistory,
   listPublishedActivities,
@@ -20,6 +27,16 @@ export async function main() {
     nodeId: "settlement-triggered-activity-publication-cell",
     actor: "urn:ame:settlement-triggered-activity-publication-cell",
     settlement: requiredEnvironment("SETTLEMENT_ACCOUNT"),
+  });
+  const offer = JSON.parse(await readFile(requiredEnvironment("CAPABILITY_OFFER_PATH"), "utf8"));
+  const encodedOffer = encodeRelationalValue(offer);
+  const offerActivity = await materializeRmnActivity({
+    type: "Offer",
+    origin: requiredEnvironment("ACTIVITYPUB_ORIGIN"),
+    identifier: requiredEnvironment("ACTIVITYPUB_IDENTIFIER"),
+    recipient: ACTIVITYSTREAMS_PUBLIC,
+    objectBytes: semanticBytes(["ascribe", encodedOffer.type, encodedOffer.term]),
+    agentCard: offer.agentCard,
   });
   const activityForValues = async ({ chain, blockHash, logIndex }) => {
     const activities = await listPublishedActivities(history);
@@ -48,15 +65,17 @@ export async function main() {
     port: Number(process.env.PORT ?? "15625"),
     listOutbox: async ({ cursor }) => ({
       items: cursor === undefined || cursor === null
-        ? await listPublishedActivities(history)
+        ? [offerActivity, ...await listPublishedActivities(history)]
         : [],
     }),
     activityPath: "/activities/{chain}/{blockHash}/{logIndex}",
     getActivity: activityForValues,
-    resolvePublicActivity: async (url) =>
-      /^\/activities\/[^/]+\/[^/]+\/[^/]+$/u.test(url.pathname)
+    resolvePublicActivity: async (url) => {
+      if (offerActivity.id?.href === url.href) return offerActivity;
+      return /^\/activities\/[^/]+\/[^/]+\/[^/]+$/u.test(url.pathname)
         ? publishedActivityForUrl(history, url)
-        : null,
+        : null;
+    },
   });
 }
 

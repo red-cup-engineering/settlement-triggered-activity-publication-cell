@@ -22,6 +22,7 @@ Environment="ACTIVITYPUB_ACTOR_SUMMARY=Advances one deterministic public pulse f
 Environment=ACTIVITYPUB_KEYS_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data/activitypub/keys.json
 Environment=ACTIVITYPUB_STATE_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data/activitypub/state.sqlite
 Environment=ACTIVITYPUB_INBOX_BEARER_TOKEN_FILE=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data/activitypub/inbox-bearer.token
+Environment=CAPABILITY_OFFER_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/content/offers/current.json
 ExecStart=/home/emsenn/.config/nvm/versions/node/v24.13.1/bin/node bin/activitypub-server.mjs
 Restart=always
 RestartSec=2

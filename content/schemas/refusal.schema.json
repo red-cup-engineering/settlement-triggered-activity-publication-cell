@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:red-cup-engineering:settlement-triggered-activity-publication:refusal:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "reason"],
+  "properties": {
+    "type": {"const": "SettlementTriggeredActivityPublicationRefusal"},
+    "reason": {"type": "string", "minLength": 1}
+  }
+}

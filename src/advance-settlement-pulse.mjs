@@ -55,6 +55,7 @@ function activityFor(demand, coordinate) {
 }
 
 export function settlementCoordinate(demand, { expectedChain } = {}) {
+  assertInput(demand);
   if (!CHAIN.test(expectedChain ?? "")) throw new TypeError("expectedChain must be an EVM CAIP-2 identifier");
   if (demand?.type !== "SettlementTriggeredActivityPublicationDemand") throw new TypeError("one settlement-triggered publication demand is required");
   if (demand.chain !== expectedChain) throw new Error(`demand must address configured chain ${expectedChain}`);
@@ -105,7 +106,7 @@ export async function advanceSettlementPulse(demand, options = {}) {
       if (receipt.activity?.id === undefined || receipt.activity.id !== receipt.activityId) {
         throw new Error("completed settlement pulse receipt is incomplete");
       }
-      return Object.freeze({ status: "already-delivered", activity: Object.freeze(receipt.activity), receipt: receipt.delivery });
+      return Object.freeze(assertOutput({ status: "already-delivered", activity: Object.freeze(receipt.activity), receipt: receipt.delivery }));
     }
   }
 
@@ -132,6 +133,7 @@ export async function advanceSettlementPulse(demand, options = {}) {
     activity,
     delivery,
   }));
-  return Object.freeze({ status: "delivered", activity, receipt: delivery });
+  return Object.freeze(assertOutput({ status: "delivered", activity, receipt: delivery }));
 }
+import { assertInput, assertOutput } from "./contracts.mjs";
 

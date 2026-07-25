@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:red-cup-engineering:settlement-triggered-activity-publication:output:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "activity", "receipt"],
+  "properties": {
+    "status": {"enum": ["delivered", "already-delivered"]},
+    "activity": {
+      "type": "object",
+      "required": ["@context", "id", "type", "actor", "to", "object"],
+      "properties": {
+        "@context": {"const": "https://www.w3.org/ns/activitystreams"},
+        "id": {"type": "string", "pattern": "^https://"},
+        "type": {"const": "Create"},
+        "actor": {"type": "string", "minLength": 1},
+        "to": {"type": "string", "minLength": 1},
+        "object": {"type": "object"}
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "required": ["delivered", "activity"],
+      "properties": {
+        "delivered": {"const": true},
+        "activity": {"type": "string", "pattern": "^https://"}
+      }
+    }
+  }
+}

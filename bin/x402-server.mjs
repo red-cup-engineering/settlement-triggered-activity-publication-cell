@@ -8,6 +8,7 @@ import {
   x402SettlementEvidence,
 } from "@emsenn/x402-services-section";
 import { settlementCoordinate } from "../src/advance-settlement-pulse.mjs";
+import { assertRefusal } from "../src/contracts.mjs";
 import { advanceWithHiredProviders, createPulseHistory } from "../src/runtime.mjs";
 
 function required(name) {
@@ -103,6 +104,36 @@ export async function main() {
   const app = express();
   app.set("trust proxy", "loopback");
   app.use(express.json({ limit: process.env.JSON_BODY_LIMIT ?? "256kb" }));
+  app.post(resourcePath, async (request, response, next) => {
+    try {
+      const authorization = requiredHeader(request, "authorization");
+      const matched = /^OCapN (urn:ocapn:sturdyref:[A-Za-z0-9_-]{43})$/u.exec(authorization);
+      if (matched === null) throw new Error("one OCapN sturdy reference is required");
+      const admissionResponse = await fetch(required("OCAPN_ADMISSION_URL"), {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ sturdyRef: matched[1], locus: "advance-settlement-pulse" }),
+      });
+      const admission = await admissionResponse.json();
+      if (!admissionResponse.ok || admission?.admitted !== true) {
+        throw new Error(`OCapN provider refused: ${admission?.reason ?? admissionResponse.status}`);
+      }
+      await history.append({
+        type: "OCapNAdmissionReceipt",
+        operation: "advance-settlement-pulse",
+        admission,
+      });
+      next();
+    } catch (error) {
+      response.status(403).json({
+        ok: false,
+        refusal: {
+          type: "OCapNSturdyRefAdmissionRefusal",
+          reason: error instanceof Error ? error.message : String(error),
+        },
+      });
+    }
+  });
   app.use(boundary.middleware);
   app.post(resourcePath, async (request, response) => {
     try {
@@ -125,10 +156,10 @@ export async function main() {
     } catch (error) {
       response.status(400).json({
         ok: false,
-        refusal: {
+        refusal: assertRefusal({
           type: "SettlementTriggeredActivityPublicationRefusal",
           reason: error instanceof Error ? error.message : String(error),
-        },
+        }),
       });
     }
   });

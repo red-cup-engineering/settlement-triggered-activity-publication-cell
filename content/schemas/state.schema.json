@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:red-cup-engineering:settlement-triggered-activity-publication:state:v1",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "type": {
+      "enum": [
+        "SettlementPulsePublicationIntent",
+        "SettlementPulseOutboxPublication",
+        "SettlementPulsePublicationReceipt",
+        "X402PaidExecutionIntent",
+        "X402SettlementReceipt",
+        "X402PaidExecutionReceipt",
+        "X402PaidExecutionRefusal",
+        "OCapNAdmissionReceipt"
+      ]
+    },
+    "invocation": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "coordinate": {"type": "object"},
+    "activity": {"type": "object"},
+    "activityId": {"type": "string"},
+    "delivery": {"type": "object"},
+    "demand": {"type": "object"},
+    "pricing": {"type": "object"},
+    "settlement": {"type": "object"},
+    "admission": {"type": "object"},
+    "result": {"type": "object"},
+    "reason": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"type": {"pattern": "^X402"}}},
+      "then": {"required": ["invocation"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "OCapNAdmissionReceipt"}}},
+      "then": {"required": ["admission"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "SettlementPulsePublicationIntent"}}},
+      "then": {"required": ["coordinate", "activity", "activityId"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "SettlementPulsePublicationReceipt"}}},
+      "then": {"required": ["coordinate", "activity", "activityId", "delivery"]}
+    }
+  ]
+}

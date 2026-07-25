@@ -5,6 +5,7 @@ import {
 import { Activity } from "@fedify/vocab";
 import { isDeepStrictEqual } from "node:util";
 import { advanceSettlementPulse } from "./advance-settlement-pulse.mjs";
+import { assertState } from "./contracts.mjs";
 
 export const HISTORY_CATEGORY = "settlement-triggered-activity-publication";
 export const OUTBOX_RECORD_TYPE = "SettlementPulseOutboxPublication";
@@ -33,6 +34,7 @@ export function createPulseHistory(options) {
       return readSettlementRecords(root, HISTORY_CATEGORY);
     },
     async append(record) {
+      assertState(record);
       return recordSettlementRecord({
         agentUrl,
         root,
