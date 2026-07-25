@@ -7,7 +7,7 @@
   "faces": {
     "github": {
       "repository": "https://github.com/red-cup-engineering/settlement-triggered-activity-publication-cell",
-      "commit": "e65c65f5fca5ed49b4a01cd6aeb5d0f0cf539bb7"
+      "commit": "7e58ea96dc6a7b2465651c1a5675c9f116fd87e8"
     },
     "activitypub": {
       "actor": "https://bare-cedar-fog.561.group/actors/settlement-pulse",
@@ -22,7 +22,13 @@
       "network": "eip155:5615610",
       "asset": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
       "payTo": "0xca7f2b2460cdd46839e177a8648f5cdff7c8713a",
-      "amount": "12"
+      "amount": "12",
+      "authorization": {
+        "profile": "OCapN",
+        "grantRequired": true,
+        "admissionProvider": "urn:ame:ocapn-sturdyref-admission-service"
+      },
+      "offer": "ni:///sha-256;4Hm_AgBJukDZ363vUt_-HfYaufW3khCnCko5m3jwteU"
     },
     "evm": {
       "network": "eip155:5615610",

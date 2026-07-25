@@ -6,17 +6,17 @@
     "capability": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64",
     "controller": "did:pkh:eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a",
     "cell": "ni:///sha-256;Sru5ZrHDT4qtByN8UQCPMKfk4-lTQpE0fI0aAWvfo-4",
-    "manifestRevision": "ni:///sha-256;5YM4JydNo1p_yHySDYXDZ_Aoz_PMBIRsVRz7gRIosfY"
+    "manifestRevision": "ni:///sha-256;IxFWOzpyYueIJf6JWgvzyYCZcoT3iMUcLUVHILE27Z4"
   },
   "repository": {
     "url": "https://github.com/red-cup-engineering/settlement-triggered-activity-publication-cell",
-    "commit": "e65c65f5fca5ed49b4a01cd6aeb5d0f0cf539bb7",
+    "commit": "7e58ea96dc6a7b2465651c1a5675c9f116fd87e8",
     "publiclyDereferenced": true
   },
   "activityPub": {
     "actor": "https://bare-cedar-fog.561.group/actors/settlement-pulse",
     "outbox": "https://bare-cedar-fog.561.group/actors/settlement-pulse/outbox",
-    "latestObservedActivity": "https://bare-cedar-fog.561.group/activities/eip155%3A5615610/c4c8452a168005677a6cb82a84c628752eb60233aa9c1c6da45387dfb6cba015/2"
+    "latestObservedActivity": "https://bare-cedar-fog.561.group/activities/eip155%3A5615610/420c0304fe25ed1b7161ba8881d1054992bade3330759d4c7ccd60ad8a00872b/2"
   },
   "a2aAgent": {
     "protocol": "A2A",
@@ -39,20 +39,34 @@
     "asset": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
     "atomicAmount": "12",
     "customer": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-    "sellerBalanceAfter": "24",
-    "settlementTransaction": "0x9d59a42a09c4299eef7d34152552f8ef4f7148cacde0834fd3153474ab7141bc",
+    "sellerBalanceAfter": "36",
+    "settlementTransaction": "0xe79aa336ab3f6013e7516cdfc282d394a300af87a9405805672b91bf93e24980",
     "settlementSuccess": true
+  },
+  "objectCapability": {
+    "profile": "OCapN",
+    "grantRequired": true,
+    "provider": "urn:ame:ocapn-sturdyref-admission-service",
+    "unauthorizedPublicStatus": 403,
+    "authorizedBoundaryStatus": 402,
+    "durableAdmissionReceipts": true
+  },
+  "marketDiscovery": {
+    "offer": "ni:///sha-256;4Hm_AgBJukDZ363vUt_-HfYaufW3khCnCko5m3jwteU",
+    "activity": "https://bare-cedar-fog.561.group/activities/rmn-bn36Ihp85O2uURAg3S6vVDWgFvgC0ZPCGIUc3W6oiDs",
+    "discoveryRequest": "ni:///sha-256;A546hLW3z5AJ21DQ1sfIfPYBJ8c2uj1SYsXQ1wyCNGU",
+    "candidateCount": 1
   },
   "customerInvocation": {
     "protocol": "x402 v2 over public HTTPS",
     "status": 202,
     "disposition": "accepted",
-    "invocation": "sha256:58cbba29feec70b643b49fa2bfe470fe59cc532062b735aaa2d9e29b506b30af",
+    "invocation": "sha256:3c84367fb2cba9c69e72fdcd270d001993b026d27a89fbcfb75095e63cb67501",
     "result": "delivered-after-settlement",
-    "activity": "https://bare-cedar-fog.561.group/activities/eip155%3A5615610/c4c8452a168005677a6cb82a84c628752eb60233aa9c1c6da45387dfb6cba015/2"
+    "activity": "https://bare-cedar-fog.561.group/activities/eip155%3A5615610/420c0304fe25ed1b7161ba8881d1054992bade3330759d4c7ccd60ad8a00872b/2"
   },
   "identityVerification": {
-    "receipt": "ni:///sha-256;YkO1vrgVWG5qJPMrYEBHFA4avKoin4uAaRhQLS7p8b0",
+    "receipt": "ni:///sha-256;UZBBQDCHm-FfH3f1iNGs3WD0wadIhNtQAu4GtOR2R-Q",
     "profile": "capcell",
     "disposition": "admitted",
     "missingRequiredBindings": []
