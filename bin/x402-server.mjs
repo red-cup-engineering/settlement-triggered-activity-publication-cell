@@ -2,11 +2,7 @@
 
 import { readFile } from "node:fs/promises";
 import express from "express";
-import {
-  createExactEvmPaymentBoundary,
-  x402PaymentIdentity,
-  x402SettlementEvidence,
-} from "@emsenn/x402-services-section";
+import { createPricedCapabilityBoundary } from "@emsenn/x402-services-section/priced-capability-boundary";
 import { settlementCoordinate } from "../src/advance-settlement-pulse.mjs";
 import { assertRefusal } from "../src/contracts.mjs";
 import { advanceWithHiredProviders, createPulseHistory } from "../src/runtime.mjs";
@@ -14,6 +10,12 @@ import { advanceWithHiredProviders, createPulseHistory } from "../src/runtime.mj
 function required(name) {
   const value = process.env[name];
   if (typeof value !== "string" || value.trim() === "") throw new Error(`${name} is required`);
+  return value;
+}
+
+function requiredHeader(request, name) {
+  const value = request.get(name);
+  if (typeof value !== "string" || value === "") throw new Error(`${name} header is required`);
   return value;
 }
 
@@ -34,14 +36,14 @@ async function reservationQuote() {
 }
 
 export async function main() {
+  const operation = "advance-settlement-pulse";
   const network = required("SETTLEMENT_CAIP2");
   const settlement = required("SETTLEMENT_ACCOUNT");
-  const payTo = settlement.split(":").at(-1);
-  const asset = required("X402_ASSET");
   const resourcePath = required("X402_RESOURCE_PATH");
-  if (!/^\/[A-Za-z0-9/_-]+$/u.test(resourcePath)) throw new Error("X402_RESOURCE_PATH must be an absolute path");
+  const resultPath = resourcePath.replace(/\/invoke$/u, "/result");
+  const offerPath = resourcePath.replace(/\/invoke$/u, "/offer");
   const quoted = await reservationQuote();
-  const pending = new Map();
+  const offer = JSON.parse(await readFile(required("CAPABILITY_OFFER_PATH"), "utf8"));
   const history = createPulseHistory({
     root: required("RWIL_DATA_ROOT"),
     agentUrl: required("RWIL_RDF_AGENT"),
@@ -49,144 +51,71 @@ export async function main() {
     actor: "urn:ame:settlement-triggered-activity-publication-cell",
     settlement,
   });
-  const boundary = createExactEvmPaymentBoundary({
-    network,
-    facilitatorUrl: required("X402_FACILITATOR_URL"),
-    routes: {
-      [`POST ${resourcePath}`]: {
-        accepts: [{
-          scheme: "exact",
-          network,
-          price: {
-            amount: quoted.atomicAmount,
-            asset,
-            extra: {
-              name: required("X402_ASSET_NAME"),
-              version: required("X402_ASSET_VERSION"),
-            },
-          },
-          payTo,
-        }],
-        description: "Advance one settlement-triggered ActivityStreams pulse.",
+  const records = history.records();
+  const recoveredRecords = {
+    intents: new Map(records
+      .filter((record) => record?.type === "X402PaidExecutionIntent")
+      .map((record) => [record.invocation, record])),
+    terminals: new Map(records
+      .filter((record) => ["X402PaidExecutionReceipt", "X402PaidExecutionRefusal"].includes(record?.type))
+      .map((record) => [record.invocation, record])),
+  };
+  const seller = createPricedCapabilityBoundary({
+    operation,
+    resourcePath,
+    offerPath,
+    resultPath,
+    offer,
+    priceTerms: {
+      network,
+      amount: quoted.atomicAmount,
+      asset: required("X402_ASSET"),
+      payTo: settlement.split(":").at(-1),
+      extra: {
+        name: required("X402_ASSET_NAME"),
+        version: required("X402_ASSET_VERSION"),
       },
+      description: "Advance one settlement-triggered ActivityStreams pulse.",
+      quote: quoted.quote,
     },
-    afterSettle: async (event) => {
-      const settlementEvidence = x402SettlementEvidence(event);
-      const invocation = settlementEvidence.invocation;
-      const intent = pending.get(invocation) ?? history.records().find(
-        (record) => record?.type === "X402PaidExecutionIntent" && record.invocation === invocation,
-      );
-      if (intent === undefined) throw new Error("settled x402 payment has no exact execution intent");
-      await history.append({
-        type: "X402SettlementReceipt",
-        invocation,
-        operation: "advance-settlement-pulse",
-        settlement: settlementEvidence,
-        pricing: quoted.quote,
-      });
-      try {
-        const result = await advanceWithHiredProviders(intent.demand, {
-          expectedChain: network,
-          history,
-        });
-        await history.append({ type: "X402PaidExecutionReceipt", invocation, result });
-      } catch (error) {
-        await history.append({
-          type: "X402PaidExecutionRefusal",
-          invocation,
-          reason: error instanceof Error ? error.message : String(error),
-        });
-      } finally {
-        pending.delete(invocation);
-      }
-    },
-  });
-  const app = express();
-  app.set("trust proxy", "loopback");
-  app.use(express.json({ limit: process.env.JSON_BODY_LIMIT ?? "256kb" }));
-  app.post(resourcePath, async (request, response, next) => {
-    try {
+    facilitatorUrl: required("X402_FACILITATOR_URL"),
+    recoveredRecords,
+    append: (record) => history.append(record),
+    admit: async ({ request }) => {
       const authorization = requiredHeader(request, "authorization");
       const matched = /^OCapN (urn:ocapn:sturdyref:[A-Za-z0-9_-]{43})$/u.exec(authorization);
       if (matched === null) throw new Error("one OCapN sturdy reference is required");
-      const admissionResponse = await fetch(required("OCAPN_ADMISSION_URL"), {
+      const response = await fetch(required("OCAPN_ADMISSION_URL"), {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ sturdyRef: matched[1], locus: "advance-settlement-pulse" }),
+        body: JSON.stringify({ sturdyRef: matched[1], locus: operation }),
       });
-      const admission = await admissionResponse.json();
-      if (!admissionResponse.ok || admission?.admitted !== true) {
-        throw new Error(`OCapN provider refused: ${admission?.reason ?? admissionResponse.status}`);
+      const admission = await response.json();
+      if (!response.ok || admission?.admitted !== true) {
+        throw new Error(`OCapN provider refused: ${admission?.reason ?? response.status}`);
       }
-      await history.append({
-        type: "OCapNAdmissionReceipt",
-        operation: "advance-settlement-pulse",
-        admission,
-      });
-      next();
-    } catch (error) {
-      response.status(403).json({
-        ok: false,
-        refusal: {
-          type: "OCapNSturdyRefAdmissionRefusal",
-          reason: error instanceof Error ? error.message : String(error),
-        },
-      });
-    }
-  });
-  app.use(boundary.middleware);
-  app.post(resourcePath, async (request, response) => {
-    try {
-      settlementCoordinate(request.body, { expectedChain: network });
-      const invocation = x402PaymentIdentity(requiredHeader(request, "payment-signature"));
-      const intent = {
-        type: "X402PaidExecutionIntent",
-        invocation,
-        demand: structuredClone(request.body),
-        pricing: quoted.quote,
-      };
-      await history.append(intent);
-      pending.set(invocation, intent);
-      response.status(202).json({
-        ok: true,
-        status: "settlement-pending",
-        invocation,
-        result: `${resourcePath.replace(/\/invoke$/u, "/result")}/${invocation.slice(7)}`,
-      });
-    } catch (error) {
-      response.status(400).json({
-        ok: false,
-        refusal: assertRefusal({
-          type: "SettlementTriggeredActivityPublicationRefusal",
-          reason: error instanceof Error ? error.message : String(error),
-        }),
-      });
-    }
-  });
-  app.get(`${resourcePath.replace(/\/invoke$/u, "/result")}/:id`, (request, response) => {
-    if (!/^[0-9a-f]{64}$/u.test(request.params.id)) {
-      response.status(400).json({ ok: false, refusal: { type: "InvalidInvocationIdentity" } });
-      return;
-    }
-    const invocation = `sha256:${request.params.id}`;
-    const terminal = history.records().findLast(
-      (record) => ["X402PaidExecutionReceipt", "X402PaidExecutionRefusal"].includes(record?.type)
-        && record.invocation === invocation,
-    );
-    response.status(terminal === undefined ? 202 : 200).json({
-      ok: true,
+      await history.append({ type: "OCapNAdmissionReceipt", operation, admission });
+      return admission;
+    },
+    createIntent: ({ invocation, request }) => {
+      settlementCoordinate(request, { expectedChain: network });
+      return { type: "X402PaidExecutionIntent", invocation, demand: request, pricing: quoted.quote };
+    },
+    execute: ({ intent }) => advanceWithHiredProviders(intent.demand, {
+      expectedChain: network,
+      history,
+    }),
+    createReceipt: ({ invocation, result }) => ({ type: "X402PaidExecutionReceipt", invocation, result }),
+    createRefusal: ({ invocation, error }) => assertRefusal({
+      type: "X402PaidExecutionRefusal",
       invocation,
-      status: terminal === undefined ? "pending" : "terminal",
-      terminal: terminal ?? null,
-    });
+      reason: error instanceof Error ? error.message : String(error),
+    }),
   });
-  app.get("/offer", (_request, response) => response.json({
-    operation: "advance-settlement-pulse",
-    network,
-    asset,
-    payTo,
-    pricing: quoted.quote,
-  }));
+  const app = express();
+  app.set("trust proxy", "loopback");
+  app.use(express.json({ limit: Infinity }));
+  seller.install(app);
   const host = process.env.HOST ?? "127.0.0.1";
   const port = Number(process.env.PORT ?? "15627");
   app.listen(port, host, () => process.stdout.write(`${JSON.stringify({
@@ -194,16 +123,8 @@ export async function main() {
     host,
     port,
     network,
-    asset,
-    payTo,
     atomicAmount: quoted.atomicAmount,
   })}\n`));
-}
-
-function requiredHeader(request, name) {
-  const value = request.get(name);
-  if (typeof value !== "string" || value === "") throw new Error(`${name} header is required`);
-  return value;
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
