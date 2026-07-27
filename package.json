@@ -22,11 +22,11 @@
   },
   "dependencies": {
     "@cfworker/json-schema": "4.1.1",
-    "@emsenn/a2a-contracted-agent-service": "file:../../../web-services-section/services/a2a-services-section/services/a2a-contracted-agent-service",
-    "@emsenn/activitypub-services-section": "file:../../../web-services-section/services/activitypub-services-section",
-    "@emsenn/x402-services-section": "file:../../../web-services-section/services/x402-services-section",
-    "@emsenn/rmn-semantic-conformance": "file:../../../model-services-section/services/relational-model-services-section/services/relational-model-notation-services-section/services/rmn-conformance-service",
-    "@emsenn/rwil-rdf-services": "file:../../../../../lenticule-science/services/obsmetrological-services-section/services/rwil-rdf-services",
+    "@red-cup-engineering/a2a-contracted-agent-service": "2.0.0",
+    "@red-cup-engineering/activitypub-services-section": "1.0.0",
+    "@red-cup-engineering/x402-services-section": "1.2.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@lenticule-science/rwil-rdf-projection-service": "1.0.0",
     "@fedify/vocab": "2.3.1",
     "express": "5.2.1"
   },
@@ -46,5 +46,23 @@
         "publication": "hired ActivityPub provider"
       }
     }
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "red-cup-engineering",
+    "kind": "capability-cell",
+    "actor": "urn:ame:settlement-triggered-activity-publication-cell",
+    "operations": [
+      "advance-settlement-pulse"
+    ],
+    "capabilities": [
+      {
+        "capability": "settlement-triggered-activity-publication-cell",
+        "faces": [
+          "advance-settlement-pulse"
+        ]
+      }
+    ],
+    "package": "@red-cup-engineering/settlement-triggered-activity-publication-cell"
   }
 }

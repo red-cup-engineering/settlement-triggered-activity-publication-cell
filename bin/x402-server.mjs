@@ -2,7 +2,7 @@
 
 import { readFile } from "node:fs/promises";
 import express from "express";
-import { createPricedCapabilityBoundary } from "@emsenn/x402-services-section/priced-capability-boundary";
+import { createPricedCapabilityBoundary } from "@red-cup-engineering/x402-services-section/priced-capability-boundary";
 import { settlementCoordinate } from "../src/advance-settlement-pulse.mjs";
 import { assertRefusal } from "../src/contracts.mjs";
 import { advanceWithHiredProviders, createPulseHistory } from "../src/runtime.mjs";

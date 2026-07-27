@@ -10,19 +10,16 @@
     "caip2": "eip155:5615610"
   },
   "account": {
-    "address": "0xca7f2b2460cdd46839e177a8648f5cdff7c8713a",
-    "caip10": "eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a"
-  },
-  "factory": {
-    "address": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
-    "userSalt": "0x5402d5c1ba6f1bc967d5d7f9b67d6bc7ccb154fe39f20f4f84672bd55310d3a2"
+    "address": "0xfDb2D721fCbd9F547Fc5363f9F91142C486c17CA",
+    "caip10": "eip155:5615610:0xfDb2D721fCbd9F547Fc5363f9F91142C486c17CA",
+    "kind": "eoa-alpha"
   },
   "policy": {
-    "signer": "0x337df243333635557c182117dab977c1855e664d",
-    "custody": "settlement-private"
+    "signer": "0xfDb2D721fCbd9F547Fc5363f9F91142C486c17CA",
+    "custody": "cold-red-gate-encrypted-keystore"
   },
   "deployment": {
-    "transaction": "0x9fa5d24bf7f8082d8ef0d0a3a59f124ddbc5c1411609ee4f5a187b9205e4a6ca",
-    "block": 26
+    "transaction": "0x33b8c3f0ac9b02d041693c646790fb85e8e932a66bb3695d820d07630a0bd38a",
+    "block": 126
   }
 }

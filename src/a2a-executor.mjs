@@ -4,11 +4,11 @@ import { createHash, randomUUID } from "node:crypto";
 import {
   decodeSemantic,
   semanticBytes,
-} from "@emsenn/rmn-semantic-conformance";
+} from "@red-cup-engineering/rmn-semantic-conformance";
 import {
   decodeRelationalValue,
-} from "@emsenn/rmn-semantic-conformance/relational-value";
-import { relationalRwilDocument } from "@emsenn/rwil-rdf-services/client";
+} from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
+import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
 import { advanceWithHiredProviders, createPulseHistory } from "./runtime.mjs";
 
 function requiredEnvironment(name) {

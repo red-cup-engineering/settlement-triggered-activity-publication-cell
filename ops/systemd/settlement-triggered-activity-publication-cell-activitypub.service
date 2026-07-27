@@ -1,34 +1,38 @@
 [Unit]
 Description=Settlement-triggered Activity Publication Cell ActivityPub face
-After=network-online.target rwil-rdf-services.service
-Wants=network-online.target rwil-rdf-services.service
+After=network-online.target union-alpha-chain-node.service
+Wants=network-online.target union-alpha-chain-node.service
 
 [Service]
 Type=exec
-WorkingDirectory=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell
+WorkingDirectory=/home/emsenn/.local/share/561-group/releases/activitypub-services-section/current
 Environment=NODE_ENV=production
 Environment=HOST=127.0.0.1
 Environment=PORT=15625
-Environment=SETTLEMENT_CAIP2=eip155:5615610
-Environment=SETTLEMENT_ACCOUNT=eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a
-Environment=RWIL_RDF_AGENT=http://127.0.0.1:19764/.well-known/agent-card.json
-Environment=RWIL_DATA_ROOT=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data
+Environment=EVM_RPC_URL=http://127.0.0.1:8561
+Environment=EVM_CHAIN_ID=5615610
+Environment=ONCHAIN_RESOURCE_CONTRACT=0x35D53D38B7603B73D76F4c1Dc1e95ECCd8631e58
+Environment=EVM_KEYSTORE_PATH=/home/emsenn/.config/red-cup-engineering/settlement-pulse/evm-wallet.json
+Environment=EVM_KEYSTORE_PASSWORD_PATH=/home/emsenn/.config/red-cup-engineering/settlement-pulse/evm-wallet.password
 Environment=ACTIVITYPUB_ORIGIN=https://bare-cedar-fog.561.group
 Environment=ACTIVITYPUB_IDENTIFIER=settlement-pulse
 Environment=ACTIVITYPUB_CELL_ID=ni:///sha-256;Sru5ZrHDT4qtByN8UQCPMKfk4-lTQpE0fI0aAWvfo-4
-Environment=ACTIVITYPUB_CONTROLLER=did:pkh:eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a
 Environment="ACTIVITYPUB_ACTOR_NAME=Settlement-triggered Activity Publication Cell"
 Environment="ACTIVITYPUB_ACTOR_SUMMARY=Advances one deterministic public pulse from one independently assayed final EVM commitment."
-Environment=ACTIVITYPUB_KEYS_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data/activitypub/keys.json
-Environment=ACTIVITYPUB_STATE_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data/activitypub/state.sqlite
-Environment=ACTIVITYPUB_INBOX_BEARER_TOKEN_FILE=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data/activitypub/inbox-bearer.token
-Environment=CAPABILITY_OFFER_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/content/offers/current.json
-ExecStart=/home/emsenn/.config/nvm/versions/node/v24.13.1/bin/node bin/activitypub-server.mjs
+Environment=ACTIVITYPUB_KEYS_PATH=/home/emsenn/.config/red-cup-engineering/settlement-pulse/activitypub-keys.json
+Environment=ACTIVITYPUB_INBOX_BEARER_TOKEN_FILE=/home/emsenn/.config/red-cup-engineering/settlement-pulse/inbox-bearer.token
+ExecStart=/home/emsenn/.nvm/versions/node/v24.16.0/bin/node src/onchain-server.mjs
 Restart=always
 RestartSec=2
 TimeoutStopSec=10
 NoNewPrivileges=true
 PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=true
+LockPersonality=true
+UMask=0077
 
 [Install]
 WantedBy=default.target

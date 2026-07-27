@@ -1,7 +1,7 @@
 [Unit]
 Description=Settlement-triggered Activity Publication Cell x402 face
-After=network-online.target rwil-rdf-services.service capability-pricing-service.service x402-facilitator-eip155-5615610.service
-Wants=network-online.target rwil-rdf-services.service capability-pricing-service.service x402-facilitator-eip155-5615610.service
+After=network-online.target rwil-rdf-projection-service.service capability-pricing-service.service x402-facilitator-eip155-5615610.service
+Wants=network-online.target rwil-rdf-projection-service.service capability-pricing-service.service x402-facilitator-eip155-5615610.service
 
 [Service]
 Type=exec

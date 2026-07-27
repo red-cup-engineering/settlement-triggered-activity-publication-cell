@@ -1,7 +1,7 @@
 import {
-  readSettlementRecords,
+  querySettlementRecords,
   recordSettlementRecord,
-} from "@emsenn/rwil-rdf-services/client";
+} from "@lenticule-science/rwil-rdf-projection-service/client";
 import { Activity } from "@fedify/vocab";
 import { isDeepStrictEqual } from "node:util";
 import { advanceSettlementPulse } from "./advance-settlement-pulse.mjs";
@@ -30,15 +30,13 @@ export function createPulseHistory(options) {
   const now = options.now ?? (() => new Date().toISOString());
 
   return Object.freeze({
-    records() {
-      return readSettlementRecords(root, HISTORY_CATEGORY);
+    async records() {
+      return await querySettlementRecords(HISTORY_CATEGORY);
     },
     async append(record) {
       assertState(record);
       return recordSettlementRecord({
         agentUrl,
-        root,
-        nodeId,
         settlement,
         actor,
         category: HISTORY_CATEGORY,

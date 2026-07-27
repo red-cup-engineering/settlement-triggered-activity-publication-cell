@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 import { readFile } from "node:fs/promises";
-import { serveActivityPubProvider } from "@emsenn/activitypub-services-section/server";
+import { serveActivityPubProvider } from "@red-cup-engineering/activitypub-services-section/server";
 import {
   ACTIVITYSTREAMS_PUBLIC,
   materializeRmnActivity,
-} from "@emsenn/activitypub-services-section/rmn-activity";
-import { semanticBytes } from "@emsenn/rmn-semantic-conformance";
-import { encodeRelationalValue } from "@emsenn/rmn-semantic-conformance/relational-value";
+} from "@red-cup-engineering/activitypub-services-section/rmn-activity";
+import { semanticBytes } from "@red-cup-engineering/rmn-semantic-conformance";
+import { encodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
 import {
   createPulseHistory,
   listPublishedActivities,
