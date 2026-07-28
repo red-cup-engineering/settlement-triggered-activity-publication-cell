@@ -5,17 +5,17 @@ Wants=network-online.target rwil-rdf-projection-service.service capability-prici
 
 [Service]
 Type=exec
-WorkingDirectory=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell
+WorkingDirectory=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/blockchain-services-section/services/settlement-triggered-activity-publication-cell
 Environment=NODE_ENV=production
 Environment=HOST=127.0.0.1
 Environment=PORT=15627
 Environment=SETTLEMENT_CAIP2=eip155:5615610
 Environment=SETTLEMENT_ACCOUNT=eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a
 Environment=RWIL_RDF_AGENT=http://127.0.0.1:19764/.well-known/agent-card.json
-Environment=RWIL_DATA_ROOT=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data
+Environment=RWIL_DATA_ROOT=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data
 Environment=PRICE_QUOTE_URL=http://127.0.0.1:19960/quote
-Environment=PRICE_QUOTE_DEMAND=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/content/pricing/alpha-reservation-price-demand.json
-Environment=CAPABILITY_OFFER_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/content/offers/current.json
+Environment=PRICE_QUOTE_DEMAND=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/blockchain-services-section/services/settlement-triggered-activity-publication-cell/content/pricing/alpha-reservation-price-demand.json
+Environment=CAPABILITY_OFFER_PATH=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/blockchain-services-section/services/settlement-triggered-activity-publication-cell/content/offers/current.json
 Environment=X402_FACILITATOR_URL=http://127.0.0.1:18893
 Environment=OCAPN_ADMISSION_URL=http://127.0.0.1:18894/admit
 Environment=X402_ASSET=0x610178dA211FEF7D417bC0e6FeD39F05609AD788
