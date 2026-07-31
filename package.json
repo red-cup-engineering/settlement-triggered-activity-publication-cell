@@ -5,9 +5,9 @@
   "type": "module",
   "description": "Advances one durable ActivityPub pulse from one independently finalized commitment on a configured EVM chain.",
   "bin": {
-    "advance-settlement-pulse": "./bin/advance-settlement-pulse.mjs",
-    "serve-settlement-pulse-activitypub": "./bin/activitypub-server.mjs",
-    "serve-settlement-pulse-x402": "./bin/x402-server.mjs"
+    "advance-settlement-pulse": "./scripts/advance-settlement-pulse.mjs",
+    "serve-settlement-pulse-activitypub": "./scripts/activitypub-server.mjs",
+    "serve-settlement-pulse-x402": "./scripts/x402-server.mjs"
   },
   "exports": {
     ".": "./src/advance-settlement-pulse.mjs",
@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "node --test",
-    "verify": "node --check src/contracts.mjs && node --check src/advance-settlement-pulse.mjs && node --check src/runtime.mjs && node --check src/successor-deployment.mjs && node --check src/successor-activation.mjs && node --check src/a2a-executor.mjs && node --check bin/advance-settlement-pulse.mjs && node --check bin/activitypub-server.mjs && node --check bin/x402-server.mjs && node --check scripts/project-successor-cutover-records.mjs && node --check scripts/project-successor-activation-records.mjs && node --test"
+    "verify": "node --check src/contracts.mjs && node --check src/advance-settlement-pulse.mjs && node --check src/runtime.mjs && node --check src/successor-deployment.mjs && node --check src/successor-activation.mjs && node --check src/a2a-executor.mjs && node --check scripts/advance-settlement-pulse.mjs && node --check scripts/activitypub-server.mjs && node --check scripts/x402-server.mjs && node --check scripts/project-successor-cutover-records.mjs && node --check scripts/project-successor-activation-records.mjs && node --test"
   },
   "engines": {
     "node": ">=22"
@@ -27,7 +27,7 @@
     "@red-cup-engineering/activitypub-services-section": "1.0.2",
     "@red-cup-engineering/x402-services-section": "1.2.0",
     "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
-    "@lenticule-science/rwil-rdf-projection-service": "1.0.2",
+    "@lenticule-science/witness-journal-rdf-projection-service": "1.0.2",
     "@fedify/vocab": "2.3.1",
     "express": "5.2.1"
   }
