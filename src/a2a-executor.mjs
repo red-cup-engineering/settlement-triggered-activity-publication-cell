@@ -10,6 +10,7 @@ import {
 } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
 import { relationalRwilDocument } from "@lenticule-science/rwil-rdf-projection-service/client";
 import { advanceWithHiredProviders, createPulseHistory } from "./runtime.mjs";
+import { loadSuccessorAccountBinding } from "./successor-deployment.mjs";
 
 function requiredEnvironment(name) {
   const value = process.env[name];
@@ -41,15 +42,20 @@ function demandFromMessage(message) {
 }
 
 export async function executeMessage(message) {
+  const active = await loadSuccessorAccountBinding({
+    manifestPath: requiredEnvironment("EVM_DEPLOYMENT_MANIFEST"),
+    accountBindingPath: process.env.SETTLEMENT_ACCOUNT_BINDING,
+    nodeId: "settlement-triggered-activity-publication-cell",
+  });
   const history = createPulseHistory({
     root: requiredEnvironment("RWIL_DATA_ROOT"),
     agentUrl: requiredEnvironment("RWIL_RDF_AGENT"),
     nodeId: "settlement-triggered-activity-publication-cell",
     actor: "urn:ame:settlement-triggered-activity-publication-cell",
-    settlement: requiredEnvironment("SETTLEMENT_ACCOUNT"),
+    settlement: active.account,
   });
   const result = await advanceWithHiredProviders(demandFromMessage(message), {
-    expectedChain: requiredEnvironment("SETTLEMENT_CAIP2"),
+    expectedChain: active.deployment.chain,
     history,
   });
   const bytes = semanticBytes(relationalRwilDocument(result));
@@ -65,7 +71,8 @@ export async function executeMessage(message) {
     }],
     metadata: {
       operation: "advance-settlement-pulse",
-      chain: requiredEnvironment("SETTLEMENT_CAIP2"),
+      chain: active.deployment.chain,
+      exchange: active.deployment.exchange,
     },
   };
 }

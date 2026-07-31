@@ -3,6 +3,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { advanceWithHiredProviders, createPulseHistory } from "../src/runtime.mjs";
+import { loadSuccessorAccountBinding } from "../src/successor-deployment.mjs";
 
 function requiredEnvironment(name) {
   const value = process.env[name];
@@ -22,15 +23,20 @@ async function readDemand(argv) {
 
 export async function main(argv = process.argv.slice(2)) {
   const demand = await readDemand(argv);
+  const active = await loadSuccessorAccountBinding({
+    manifestPath: requiredEnvironment("EVM_DEPLOYMENT_MANIFEST"),
+    accountBindingPath: process.env.SETTLEMENT_ACCOUNT_BINDING,
+    nodeId: "settlement-triggered-activity-publication-cell",
+  });
   const history = createPulseHistory({
     root: requiredEnvironment("RWIL_DATA_ROOT"),
     agentUrl: requiredEnvironment("RWIL_RDF_AGENT"),
     nodeId: "settlement-triggered-activity-publication-cell",
     actor: "urn:ame:settlement-triggered-activity-publication-cell",
-    settlement: requiredEnvironment("SETTLEMENT_ACCOUNT"),
+    settlement: active.account,
   });
   const result = await advanceWithHiredProviders(demand, {
-    expectedChain: requiredEnvironment("SETTLEMENT_CAIP2"),
+    expectedChain: active.deployment.chain,
     history,
   });
   process.stdout.write(`${JSON.stringify(result)}\n`);

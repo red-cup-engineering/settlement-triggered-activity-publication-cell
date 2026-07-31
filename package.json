@@ -11,11 +11,12 @@
   },
   "exports": {
     ".": "./src/advance-settlement-pulse.mjs",
-    "./runtime": "./src/runtime.mjs"
+    "./runtime": "./src/runtime.mjs",
+    "./successor-activation": "./src/successor-activation.mjs"
   },
   "scripts": {
     "test": "node --test",
-    "verify": "node --check src/contracts.mjs && node --check src/advance-settlement-pulse.mjs && node --check src/runtime.mjs && node --check src/a2a-executor.mjs && node --check bin/advance-settlement-pulse.mjs && node --check bin/activitypub-server.mjs && node --check bin/x402-server.mjs && node --test"
+    "verify": "node --check src/contracts.mjs && node --check src/advance-settlement-pulse.mjs && node --check src/runtime.mjs && node --check src/successor-deployment.mjs && node --check src/successor-activation.mjs && node --check src/a2a-executor.mjs && node --check bin/advance-settlement-pulse.mjs && node --check bin/activitypub-server.mjs && node --check bin/x402-server.mjs && node --check scripts/project-successor-cutover-records.mjs && node --check scripts/project-successor-activation-records.mjs && node --test"
   },
   "engines": {
     "node": ">=22"
@@ -23,46 +24,11 @@
   "dependencies": {
     "@cfworker/json-schema": "4.1.1",
     "@red-cup-engineering/a2a-contracted-agent-service": "2.0.4",
-    "@red-cup-engineering/activitypub-services-section": "1.0.0",
+    "@red-cup-engineering/activitypub-services-section": "1.0.2",
     "@red-cup-engineering/x402-services-section": "1.2.0",
-    "@red-cup-engineering/rmn-semantic-conformance": "6.0.0",
+    "@red-cup-engineering/rmn-semantic-conformance": "6.0.1",
     "@lenticule-science/rwil-rdf-projection-service": "1.0.2",
     "@fedify/vocab": "2.3.1",
     "express": "5.2.1"
-  },
-  "x-agentic-metro-enterprise": {
-    "node-id": "settlement-triggered-activity-publication-cell",
-    "actor": "urn:ame:settlement-triggered-activity-publication-cell",
-    "organizational-kind": "blockchain-capability-cell",
-    "owners": [
-      "blockchain-services-section"
-    ],
-    "operation-catalog": {
-      "advance-settlement-pulse": {
-        "chain": "deployment parameter: EVM CAIP-2",
-        "activityPubActor": "deployment parameter: HTTPS actor URL",
-        "taskProtocol": "A2A 1.0",
-        "memory": "hired RWIL/RDF provider",
-        "publication": "hired ActivityPub provider"
-      }
-    }
-  },
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "capability-cell",
-    "actor": "urn:ame:settlement-triggered-activity-publication-cell",
-    "operations": [
-      "advance-settlement-pulse"
-    ],
-    "capabilities": [
-      {
-        "capability": "settlement-triggered-activity-publication-cell",
-        "faces": [
-          "advance-settlement-pulse"
-        ]
-      }
-    ],
-    "package": "@red-cup-engineering/settlement-triggered-activity-publication-cell"
   }
 }

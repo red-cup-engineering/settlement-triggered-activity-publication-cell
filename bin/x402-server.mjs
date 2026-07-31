@@ -6,6 +6,11 @@ import { createPricedCapabilityBoundary } from "@red-cup-engineering/x402-servic
 import { settlementCoordinate } from "../src/advance-settlement-pulse.mjs";
 import { assertRefusal } from "../src/contracts.mjs";
 import { advanceWithHiredProviders, createPulseHistory } from "../src/runtime.mjs";
+import {
+  loadSuccessorAccountBinding,
+  loadSuccessorX402Binding,
+  requireActiveSuccessorRecord,
+} from "../src/successor-deployment.mjs";
 
 function required(name) {
   const value = process.env[name];
@@ -37,13 +42,28 @@ async function reservationQuote() {
 
 export async function main() {
   const operation = "advance-settlement-pulse";
-  const network = required("SETTLEMENT_CAIP2");
-  const settlement = required("SETTLEMENT_ACCOUNT");
+  const active = await loadSuccessorAccountBinding({
+    manifestPath: required("EVM_DEPLOYMENT_MANIFEST"),
+    accountBindingPath: process.env.SETTLEMENT_ACCOUNT_BINDING,
+    nodeId: "settlement-triggered-activity-publication-cell",
+  });
+  const network = active.deployment.chain;
+  const settlement = active.account;
+  const economic = await loadSuccessorX402Binding({
+    path: process.env.X402_BINDING,
+    deployment: active.deployment,
+    account: active.account,
+    nodeId: "settlement-triggered-activity-publication-cell",
+  });
   const resourcePath = required("X402_RESOURCE_PATH");
   const resultPath = resourcePath.replace(/\/invoke$/u, "/result");
   const offerPath = resourcePath.replace(/\/invoke$/u, "/offer");
   const quoted = await reservationQuote();
-  const offer = JSON.parse(await readFile(required("CAPABILITY_OFFER_PATH"), "utf8"));
+  const offer = requireActiveSuccessorRecord(
+    JSON.parse(await readFile(required("CAPABILITY_OFFER_PATH"), "utf8")),
+    "org.emsenn.capability-offer.v3",
+    "settlement-triggered-activity-publication-cell",
+  );
   const history = createPulseHistory({
     root: required("RWIL_DATA_ROOT"),
     agentUrl: required("RWIL_RDF_AGENT"),
@@ -51,7 +71,7 @@ export async function main() {
     actor: "urn:ame:settlement-triggered-activity-publication-cell",
     settlement,
   });
-  const records = history.records();
+  const records = await history.records();
   const recoveredRecords = {
     intents: new Map(records
       .filter((record) => record?.type === "X402PaidExecutionIntent")
@@ -69,16 +89,16 @@ export async function main() {
     priceTerms: {
       network,
       amount: quoted.atomicAmount,
-      asset: required("X402_ASSET"),
-      payTo: settlement.split(":").at(-1),
+      asset: economic.asset,
+      payTo: economic.payTo,
       extra: {
-        name: required("X402_ASSET_NAME"),
-        version: required("X402_ASSET_VERSION"),
+        name: economic.assetName,
+        version: economic.assetVersion,
       },
       description: "Advance one settlement-triggered ActivityStreams pulse.",
       quote: quoted.quote,
     },
-    facilitatorUrl: required("X402_FACILITATOR_URL"),
+    facilitatorUrl: economic.facilitatorUrl,
     recoveredRecords,
     append: (record) => history.append(record),
     admit: async ({ request }) => {

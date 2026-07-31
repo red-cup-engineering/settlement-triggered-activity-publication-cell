@@ -48,16 +48,16 @@ export function createPulseHistory(options) {
 }
 
 export async function listPublishedActivities(history) {
-  const records = history.records();
+  const records = await history.records();
   const publications = records
     .filter((record) => record?.type === OUTBOX_RECORD_TYPE)
     .map((record) => record.activity);
   return Promise.all(publications.map((activity) => Activity.fromJsonLd(activity)));
 }
 
-export function publishedActivityForUrl(history, url) {
+export async function publishedActivityForUrl(history, url) {
   const expected = url instanceof URL ? url.href : new URL(url).href;
-  return history.records().find(
+  return (await history.records()).find(
     (record) => record?.type === OUTBOX_RECORD_TYPE && record.activity?.id === expected,
   )?.activity ?? null;
 }
@@ -70,13 +70,13 @@ export async function advanceWithHiredProviders(demand, {
       || typeof history.records !== "function" || typeof history.append !== "function") {
     throw new TypeError("a hired durable history provider is required");
   }
-  const records = history.records();
+  const records = await history.records();
   return advanceSettlementPulse(demand, {
     expectedChain,
     history: records,
     append: (record) => history.append(record),
     publish: async (activity) => {
-      const prior = history.records().find(
+      const prior = (await history.records()).find(
         (record) => record?.type === OUTBOX_RECORD_TYPE && record.activity?.id === activity.id,
       );
       if (prior !== undefined) {
@@ -89,7 +89,7 @@ export async function advanceWithHiredProviders(demand, {
           activity,
         }));
       }
-      const retained = history.records().find(
+      const retained = (await history.records()).find(
         (record) => record?.type === OUTBOX_RECORD_TYPE && exactActivity(record.activity, activity),
       );
       if (retained === undefined) throw new Error("ActivityPub outbox provider did not retain the exact activity");

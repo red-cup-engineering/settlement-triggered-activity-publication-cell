@@ -1,6 +1,6 @@
 {
   "name": "Settlement-triggered Activity Publication Cell",
-  "description": "Advances one deterministic public ActivityPub pulse from one independently assayed final EVM commitment.",
+  "description": "Advances one deterministic public ActivityPub pulse from one assayed final EVM commitment. Active settlement is unavailable until the recorded eip155:5615611 identity migration is completed.",
   "supportedInterfaces": [
     {
       "url": "${BASE_URL}/a2a/jsonrpc",
@@ -34,7 +34,18 @@
           "cell": "ni:///sha-256;Sru5ZrHDT4qtByN8UQCPMKfk4-lTQpE0fI0aAWvfo-4",
           "law": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64",
           "sku": "ni:///sha-256;xD99GvwJPkbs6UJMrhJp9PxibQhlJl8GX7OD2Xd1shA",
-          "account": "eip155:5615610:0xca7f2b2460cdd46839e177a8648f5cdff7c8713a"
+          "settlementDeployment": {
+            "chain": "eip155:5615611",
+            "exchange": "0xc4234dc42c9d93bc7d61b0354aba2729ae52e322",
+            "deploymentBlock": 70,
+            "deploymentTransaction": "0xc9fc39f125d55ead39635cf0f4941b9b4dbebffd390e34bc4fc64f6bd0901203",
+            "manifest": "lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/services/blockchain-services-section/services/ethereum-services-section/data/deployments/eip155-5615611-semiotic-exchange.json"
+          },
+          "availability": {
+            "state": "unavailable",
+            "code": "SUCCESSOR_CHAIN_IDENTITY_UNBOUND",
+            "requirement": "Provision and verify one eip155:5615611 EnterpriseAccount for settlement-triggered-activity-publication-cell; verify its successor x402 facilitator, asset contract, and payee; then regenerate its account/x402 bindings, Agent Card, capability identity, and offer through their owning services."
+          }
         }
       }
     ],

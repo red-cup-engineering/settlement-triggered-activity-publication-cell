@@ -47,19 +47,22 @@ function demand() {
 function memory() {
   const rows = [];
   return {
-    records: () => structuredClone(rows),
+    records: async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      return structuredClone(rows);
+    },
     append: async (row) => rows.push(structuredClone(row)),
   };
 }
 
-test("runtime retains an outbox publication between intent and receipt", async () => {
+test("runtime awaits a genuinely asynchronous durable history and retains an outbox publication", async () => {
   const history = memory();
   const first = await advanceWithHiredProviders(demand(), {
     expectedChain: "eip155:9",
     history,
   });
   assert.equal(first.status, "delivered");
-  assert.deepEqual(history.records().map(({ type }) => type), [
+  assert.deepEqual((await history.records()).map(({ type }) => type), [
     "SettlementPulsePublicationIntent",
     OUTBOX_RECORD_TYPE,
     "SettlementPulsePublicationReceipt",
@@ -70,9 +73,9 @@ test("runtime retains an outbox publication between intent and receipt", async (
     history,
   });
   assert.equal(replay.status, "already-delivered");
-  assert.equal(history.records().filter(({ type }) => type === OUTBOX_RECORD_TYPE).length, 1);
+  assert.equal((await history.records()).filter(({ type }) => type === OUTBOX_RECORD_TYPE).length, 1);
   assert.deepEqual(
-    publishedActivityForUrl(history, new URL(first.activity.id)),
+    await publishedActivityForUrl(history, new URL(first.activity.id)),
     first.activity,
   );
 });
@@ -87,7 +90,10 @@ test("RWIL key ordering does not change exact ActivityStreams equality", async (
     );
   };
   const history = {
-    records: () => structuredClone(rows),
+    records: async () => {
+      await new Promise((resolve) => setImmediate(resolve));
+      return structuredClone(rows);
+    },
     append: async (row) => rows.push(recursivelySorted(structuredClone(row))),
   };
   const result = await advanceWithHiredProviders(demand(), {
