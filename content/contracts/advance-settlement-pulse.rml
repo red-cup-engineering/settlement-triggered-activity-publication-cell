@@ -1,8 +1,0 @@
-#lang rmn/v2
-(map
-  ("type" "SettlementTriggeredActivityPublicationLaw")
-  ("version" 1)
-  ("precondition" "Receive one independently positive finality-policy assay for one exact EVM CAIP-2 settlement coordinate and one fully typed commitment naming the same chain, block hash, transaction hash, and log index.")
-  ("operation" "Against the deployment-selected EVM CAIP-2 chain and HTTPS ActivityPub actor, reject cursor regression or coordinate conflict; append one deterministic publication intent; hire durable operational memory and ActivityPub publication providers; publish one public ActivityStreams Create whose SettlementSuccessorPulse object preserves the exact coordinate and commitment; and append the exact delivery receipt.")
-  ("postcondition" "Return delivered with the exact public activity and delivery receipt, or already-delivered for an identical completed coordinate; retain sufficient append-only state to resume an interrupted intent without duplicating the public activity.")
-  ("refusal" "Refuse absent, negative, mismatched, malformed, noncanonical, regressing, or conflicting settlement evidence; an ActivityPub provider that does not retain the exact activity; and any deployment lacking explicit chain, actor, controller, and contracted memory providers. Chain identifiers, hosts, provider addresses, task lifetime, and price are deployment or offer parameters and never constants of this law."))
