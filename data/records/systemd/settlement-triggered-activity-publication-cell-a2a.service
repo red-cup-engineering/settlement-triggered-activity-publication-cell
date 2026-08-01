@@ -1,7 +1,7 @@
 [Unit]
 Description=Settlement-triggered Activity Publication Cell A2A face
-After=network-online.target rwil-rdf-projection-service.service
-Wants=network-online.target rwil-rdf-projection-service.service
+After=network-online.target witness-journal-rdf-projection-service.service
+Wants=network-online.target witness-journal-rdf-projection-service.service
 
 [Service]
 Type=exec
@@ -9,8 +9,8 @@ WorkingDirectory=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cu
 Environment=NODE_ENV=production
 Environment=EVM_DEPLOYMENT_MANIFEST=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/services/blockchain-services-section/services/ethereum-services-section/data/deployments/eip155-5615611-semiotic-exchange.json
 Environment=SETTLEMENT_ACCOUNT_BINDING=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/content/evm/accounts/eip155-5615611.json
-Environment=RWIL_RDF_AGENT=http://127.0.0.1:19764/.well-known/agent-card.json
-Environment=RWIL_DATA_ROOT=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data
+Environment=WITNESS_JOURNAL_RDF_AGENT=http://127.0.0.1:19764/.well-known/agent-card.json
+Environment=WITNESS_JOURNAL_DATA_ROOT=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data
 Environment=AGENT_CARD_SIGNING_KEY=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/data/agent-card-signing/ed25519-private.pem
 Environment=AGENT_CARD_JWKS=/home/emsenn/info/lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/services/blockchain-services-section/services/settlement-triggered-activity-publication-cell/content/agent-card-signing/jwks.json
 Environment=AGENT_CARD_SIGNING_KID=settlement-triggered-activity-publication-cell-alpha
