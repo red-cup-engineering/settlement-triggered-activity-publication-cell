@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import { createHash, randomUUID } from "node:crypto";
+import { randomUUID } from "node:crypto";
+import { rawNiUri } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
 import {
   decodeSemantic,
   semanticBytes,
@@ -25,7 +26,7 @@ function requestBytes(message) {
     throw new TypeError("A2A request requires exactly one application/rmn+cbor raw part");
   }
   const bytes = Buffer.from(candidates[0].raw, "base64");
-  const ni = `ni:///sha-256;${createHash("sha256").update(bytes).digest("base64url")}`;
+  const ni = rawNiUri(bytes);
   if (bytes.length === 0 || bytes.toString("base64") !== candidates[0].raw
       || candidates[0].metadata?.ni !== ni) {
     throw new TypeError("A2A request RMN bytes or identity are not canonical");
@@ -59,7 +60,7 @@ export async function executeMessage(message) {
     history,
   });
   const bytes = semanticBytes(relationalWitnessJournalDocument(result));
-  const ni = `ni:///sha-256;${createHash("sha256").update(bytes).digest("base64url")}`;
+  const ni = rawNiUri(bytes);
   return {
     messageId: randomUUID(),
     role: "ROLE_AGENT",

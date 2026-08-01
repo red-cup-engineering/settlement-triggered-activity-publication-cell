@@ -29,6 +29,7 @@
     "@red-cup-engineering/rmn-semantic-conformance": "6.0.2",
     "@lenticule-science/witness-journal-rdf-projection-service": "1.0.3",
     "@fedify/vocab": "2.3.1",
-    "express": "5.2.1"
+    "express": "5.2.1",
+    "@red-cup-engineering/rmn-semantic-conformance-die": "6.0.1"
   }
 }
