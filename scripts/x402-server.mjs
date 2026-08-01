@@ -65,8 +65,8 @@ export async function main() {
     "settlement-triggered-activity-publication-cell",
   );
   const history = createPulseHistory({
-    root: required("RWIL_DATA_ROOT"),
-    agentUrl: required("RWIL_RDF_AGENT"),
+    root: required("WITNESS_JOURNAL_DATA_ROOT"),
+    agentUrl: required("WITNESS_JOURNAL_RDF_AGENT"),
     nodeId: "settlement-triggered-activity-publication-cell",
     actor: "urn:ame:settlement-triggered-activity-publication-cell",
     settlement,

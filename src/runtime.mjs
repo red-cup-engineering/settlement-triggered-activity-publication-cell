@@ -22,8 +22,8 @@ function exactActivity(left, right) {
 }
 
 export function createPulseHistory(options) {
-  const root = requiredText(options?.root, "RWIL data root");
-  const agentUrl = requiredText(options?.agentUrl, "RWIL/RDF Agent Card URL");
+  const root = requiredText(options?.root, "WitnessJournal data root");
+  const agentUrl = requiredText(options?.agentUrl, "witness-journal RDF Agent Card URL");
   const nodeId = requiredText(options?.nodeId, "cell node ID");
   const actor = requiredText(options?.actor, "cell actor");
   const settlement = requiredText(options?.settlement, "settlement account");

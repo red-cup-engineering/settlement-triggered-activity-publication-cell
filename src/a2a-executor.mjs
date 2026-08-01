@@ -8,7 +8,7 @@ import {
 import {
   decodeRelationalValue,
 } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { relationalRwilDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
 import { advanceWithHiredProviders, createPulseHistory } from "./runtime.mjs";
 import { loadSuccessorAccountBinding } from "./successor-deployment.mjs";
 
@@ -48,8 +48,8 @@ export async function executeMessage(message) {
     nodeId: "settlement-triggered-activity-publication-cell",
   });
   const history = createPulseHistory({
-    root: requiredEnvironment("RWIL_DATA_ROOT"),
-    agentUrl: requiredEnvironment("RWIL_RDF_AGENT"),
+    root: requiredEnvironment("WITNESS_JOURNAL_DATA_ROOT"),
+    agentUrl: requiredEnvironment("WITNESS_JOURNAL_RDF_AGENT"),
     nodeId: "settlement-triggered-activity-publication-cell",
     actor: "urn:ame:settlement-triggered-activity-publication-cell",
     settlement: active.account,
@@ -58,7 +58,7 @@ export async function executeMessage(message) {
     expectedChain: active.deployment.chain,
     history,
   });
-  const bytes = semanticBytes(relationalRwilDocument(result));
+  const bytes = semanticBytes(relationalWitnessJournalDocument(result));
   const ni = `ni:///sha-256;${createHash("sha256").update(bytes).digest("base64url")}`;
   return {
     messageId: randomUUID(),

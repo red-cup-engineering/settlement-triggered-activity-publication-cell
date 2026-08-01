@@ -80,7 +80,7 @@ test("runtime awaits a genuinely asynchronous durable history and retains an out
   );
 });
 
-test("RWIL key ordering does not change exact ActivityStreams equality", async () => {
+test("WitnessJournal key ordering does not change exact ActivityStreams equality", async () => {
   const rows = [];
   const recursivelySorted = (value) => {
     if (Array.isArray(value)) return value.map(recursivelySorted);

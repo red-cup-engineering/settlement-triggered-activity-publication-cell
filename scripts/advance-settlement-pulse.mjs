@@ -29,8 +29,8 @@ export async function main(argv = process.argv.slice(2)) {
     nodeId: "settlement-triggered-activity-publication-cell",
   });
   const history = createPulseHistory({
-    root: requiredEnvironment("RWIL_DATA_ROOT"),
-    agentUrl: requiredEnvironment("RWIL_RDF_AGENT"),
+    root: requiredEnvironment("WITNESS_JOURNAL_DATA_ROOT"),
+    agentUrl: requiredEnvironment("WITNESS_JOURNAL_RDF_AGENT"),
     nodeId: "settlement-triggered-activity-publication-cell",
     actor: "urn:ame:settlement-triggered-activity-publication-cell",
     settlement: active.account,
