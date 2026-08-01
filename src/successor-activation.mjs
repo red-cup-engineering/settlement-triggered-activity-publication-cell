@@ -1,4 +1,4 @@
-import { createHash } from "node:crypto";
+import { rawNiUri } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
 
 const CHAIN = "eip155:5615611";
 const NODE = "settlement-triggered-activity-publication-cell";
@@ -18,7 +18,7 @@ function stable(value) {
 }
 
 export function contentAddress(value) {
-  return `ni:///sha-256;${createHash("sha256").update(JSON.stringify(stable(value))).digest("base64url")}`;
+  return rawNiUri(JSON.stringify(stable(value)));
 }
 
 function exactDeployment(deployment) {
