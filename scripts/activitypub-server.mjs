@@ -6,8 +6,8 @@ import {
   ACTIVITYSTREAMS_PUBLIC,
   materializeRmnActivity,
 } from "@red-cup-engineering/activitypub-services-section/rmn-activity";
-import { semanticBytes } from "@red-cup-engineering/rmn-semantic-conformance";
-import { encodeRelationalValue } from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
+import { semanticBytes } from "@red-cup-engineering/relation-model-notation-runtime";
+import { encodeRelationalValue } from "@red-cup-engineering/relation-model-notation-runtime/relational-value";
 import {
   createPulseHistory,
   listPublishedActivities,

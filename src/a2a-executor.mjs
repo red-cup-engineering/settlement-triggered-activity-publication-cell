@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 import { randomUUID } from "node:crypto";
-import { rawNiUri } from "@red-cup-engineering/rmn-semantic-conformance-die/canonical-cbor";
+import { rawNiUri } from "@red-cup-engineering/relation-model-notation-runtime/canonical-cbor";
 import {
   decodeSemantic,
   semanticBytes,
-} from "@red-cup-engineering/rmn-semantic-conformance";
+} from "@red-cup-engineering/relation-model-notation-runtime";
 import {
   decodeRelationalValue,
-} from "@red-cup-engineering/rmn-semantic-conformance/relational-value";
-import { relationalWitnessJournalDocument } from "@lenticule-science/witness-journal-rdf-projection-service/client";
+} from "@red-cup-engineering/relation-model-notation-runtime/relational-value";
+import { relationalWitnessJournalDocument } from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
 import { advanceWithHiredProviders, createPulseHistory } from "./runtime.mjs";
 import { loadSuccessorAccountBinding } from "./successor-deployment.mjs";
 

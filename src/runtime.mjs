@@ -1,7 +1,7 @@
 import {
   querySettlementRecords,
   recordSettlementRecord,
-} from "@lenticule-science/witness-journal-rdf-projection-service/client";
+} from "@red-cup-engineering/witness-journal-rdf-projection-service/client";
 import { Activity } from "@fedify/vocab";
 import { isDeepStrictEqual } from "node:util";
 import { advanceSettlementPulse } from "./advance-settlement-pulse.mjs";
