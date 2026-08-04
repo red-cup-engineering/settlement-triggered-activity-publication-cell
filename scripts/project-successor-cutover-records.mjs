@@ -9,7 +9,7 @@ const cell = path.resolve(here, "..");
 const info = path.resolve(cell, "../../../../../../../../../../../..");
 const x402 = path.join(
   info,
-  "lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/services/web-services-section/services/x402-services-section/services/x402-exact-purchase-service",
+  "lib/emsenn/services/561-group/services/red-cup-engineering/services/software-services-section/services/web-services-section/services/web-protocol-services-section/services/x402-services-section/services/x402-exact-purchase-service",
 );
 const deploymentPath = path.join(
   info,
