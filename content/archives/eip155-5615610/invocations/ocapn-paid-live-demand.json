@@ -1,0 +1,42 @@
+{
+  "type": "HistoricalChainProjectionArchive",
+  "historical": true,
+  "chain": "eip155:5615610",
+  "recordKind": "settlement-demand",
+  "source": "content/invocations/ocapn-paid-live-demand.json",
+  "record": {
+    "type": "SettlementTriggeredActivityPublicationDemand",
+    "chain": "eip155:5615610",
+    "actor": "https://bare-cedar-fog.561.group/actors/settlement-pulse",
+    "recipient": "https://www.w3.org/ns/activitystreams#Public",
+    "finalityAssay": {
+      "type": "ReceiptFinalityPolicyAssay",
+      "positiveEvidence": true,
+      "negativeEvidence": false,
+      "result": {
+        "chainId": "eip155:5615610",
+        "blockHash": "0x420c0304fe25ed1b7161ba8881d1054992bade3330759d4c7ccd60ad8a00872b",
+        "transactionHash": "0xd395b8526daf4e67815d9914804ff48b8b51e2bd18e5027d3b050dc08101e410",
+        "logIndex": 2,
+        "blockNumber": 34,
+        "observedThrough": 34,
+        "boundaryKind": "confirmation-threshold",
+        "settlingRegime": "scott-continuous",
+        "finalityPolicy": "eip155-5615610-one-canonical-inclusion",
+        "positiveEvidence": true,
+        "negativeEvidence": false
+      }
+    },
+    "commitment": {
+      "type": "TypedCommitment",
+      "rmnAct": "ni:///sha-256;nkxWZE00591q8KYYrFRje9Qv8U-11402Z11s5ice96I",
+      "predicate": "ni:///sha-256;y2I0OzXNgR_vYQVCWlO8m2atwTV77KaELI-ZfqfbP4U",
+      "subject": "ni:///sha-256;Sru5ZrHDT4qtByN8UQCPMKfk4-lTQpE0fI0aAWvfo-4",
+      "object": "ni:///sha-256;LYIopz2yoirGODpkLQfnFjcUpbpfejWRrBFGDhJp2go",
+      "evidenceRoot": "ni:///sha-256;amJM-ZGYsoqvb0M_PAgHZacdernMVvzPC2emXiOlMbU",
+      "transactionHash": "0xd395b8526daf4e67815d9914804ff48b8b51e2bd18e5027d3b050dc08101e410",
+      "blockHash": "0x420c0304fe25ed1b7161ba8881d1054992bade3330759d4c7ccd60ad8a00872b",
+      "logIndex": 2
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:red-cup-engineering:settlement-triggered-activity-publication:input:v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "chain", "actor", "recipient", "finalityAssay", "commitment"],
+  "properties": {
+    "type": {"const": "SettlementTriggeredActivityPublicationDemand"},
+    "chain": {"type": "string", "pattern": "^eip155:[1-9][0-9]*$"},
+    "actor": {"type": "string", "minLength": 1},
+    "recipient": {"type": "string", "minLength": 1},
+    "finalityAssay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "positiveEvidence", "negativeEvidence", "result"],
+      "properties": {
+        "type": {"const": "ReceiptFinalityPolicyAssay"},
+        "positiveEvidence": {"type": "boolean"},
+        "negativeEvidence": {"type": "boolean"},
+        "result": {
+          "type": "object",
+          "required": ["chainId", "blockNumber", "blockHash", "transactionHash", "logIndex", "finalityPolicy", "positiveEvidence", "negativeEvidence"],
+          "properties": {
+            "chainId": {"type": "string", "pattern": "^eip155:[1-9][0-9]*$"},
+            "blockNumber": {"type": "integer", "minimum": 0},
+            "blockHash": {"$ref": "#/$defs/hash"},
+            "transactionHash": {"$ref": "#/$defs/hash"},
+            "logIndex": {"type": "integer", "minimum": 0},
+            "finalityPolicy": {"type": "string", "minLength": 1},
+            "positiveEvidence": {"type": "boolean"},
+            "negativeEvidence": {"type": "boolean"}
+          }
+        }
+      }
+    },
+    "commitment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "rmnAct", "predicate", "subject", "object", "evidenceRoot", "transactionHash", "blockHash", "logIndex"],
+      "properties": {
+        "type": {"const": "TypedCommitment"},
+        "rmnAct": {"$ref": "#/$defs/ni"},
+        "predicate": {"$ref": "#/$defs/ni"},
+        "subject": {"$ref": "#/$defs/ni"},
+        "object": {"$ref": "#/$defs/ni"},
+        "evidenceRoot": {"$ref": "#/$defs/ni"},
+        "transactionHash": {"$ref": "#/$defs/hash"},
+        "blockHash": {"$ref": "#/$defs/hash"},
+        "logIndex": {"type": "integer", "minimum": 0}
+      }
+    }
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^0x[0-9a-fA-F]{64}$"},
+    "ni": {"type": "string", "pattern": "^ni:///sha-256;[A-Za-z0-9_-]{43}$"}
+  }
+}

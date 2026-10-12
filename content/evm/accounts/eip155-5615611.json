@@ -1,0 +1,51 @@
+{
+  "profile": "org.emsenn.evm.sovereign-enterprise-account.v3",
+  "enterprise": {
+    "nodeId": "settlement-triggered-activity-publication-cell",
+    "urn": "urn:ame:settlement-triggered-activity-publication-cell",
+    "enterpriseId": "0xb7bb294f0c2038ca6baf6b98ea12a2b933ca5732df593069cebf6904d52a7692"
+  },
+  "chain": {
+    "chainId": 5615611,
+    "caip2": "eip155:5615611"
+  },
+  "account": {
+    "address": "0xb8468f70ad4f29d1ac0e5543a47435c1f659fe05",
+    "caip10": "eip155:5615611:0xb8468f70ad4f29d1ac0e5543a47435c1f659fe05"
+  },
+  "factory": {
+    "address": "0x402616b746c56deb665bd163f32ec4b8e7dc0916",
+    "userSalt": "0xc04d15359a542f9f6005a588c6cb7c0839ed54e35814f748d22d7f05f8f95109"
+  },
+  "policy": {
+    "signer": "0xee1e43a722bf5dcd653f0bea04370575aea7470a",
+    "custody": "remote-cloud-kms-hsm",
+    "keyVersion": "projects/five-six-one-group-dev/locations/us-central1/keyRings/zero-custody-semiotic/cryptoKeys/settlement-publication-policy-signer/cryptoKeyVersions/1"
+  },
+  "deployment": {
+    "transaction": "0x8a3a23397b892641783553fe4d4a66f0f7159f49dded95278f979f08cd338819",
+    "block": 1229
+  },
+  "accounting": {
+    "authority": {
+      "enterpriseUrn": "urn:ame:settlement-triggered-activity-publication-cell",
+      "nodeId": "settlement-triggered-activity-publication-cell"
+    },
+    "funding": {
+      "source": "remote-cloud-kms-treasury",
+      "treasury": "0xacd5243c5734f68e866047231f1017a8a9832c3e",
+      "custody": "remote-cloud-kms-hsm",
+      "keyVersion": "projects/five-six-one-group-dev/locations/us-central1/keyRings/zero-custody-semiotic/cryptoKeys/a5615611-contract-deployer/cryptoKeyVersions/1",
+      "minimumWei": "10000000000000000",
+      "balanceWei": "10000000000000000",
+      "transactions": []
+    },
+    "chain": {
+      "deployment": {
+        "transaction": "0x8a3a23397b892641783553fe4d4a66f0f7159f49dded95278f979f08cd338819",
+        "block": 1229
+      },
+      "idempotentReconciliation": false
+    }
+  }
+}

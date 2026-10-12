@@ -1,0 +1,48 @@
+{
+  "type": "HistoricalChainProjectionArchive",
+  "historical": true,
+  "chain": "eip155:5615610",
+  "recordKind": "capability-cell-manifest",
+  "source": "content/capcell/manifest.json",
+  "record": {
+    "type": "CapabilityCellManifest",
+    "version": 2,
+    "sku": "ni:///sha-256;xD99GvwJPkbs6UJMrhJp9PxibQhlJl8GX7OD2Xd1shA",
+    "capability": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64",
+    "controller": "did:pkh:eip155:5615610:0xfDb2D721fCbd9F547Fc5363f9F91142C486c17CA",
+    "faces": {
+      "github": {
+        "repository": "https://github.com/red-cup-engineering/settlement-triggered-activity-publication-cell",
+        "commit": "7e58ea96dc6a7b2465651c1a5675c9f116fd87e8"
+      },
+      "activitypub": {
+        "actor": "https://bare-cedar-fog.561.group/actors/settlement-pulse",
+        "outbox": "https://bare-cedar-fog.561.group/actors/settlement-pulse/outbox"
+      },
+      "a2a": {
+        "agentCard": "https://bare-cedar-fog.561.group/a2a/settlement-pulse/.well-known/agent-card.json"
+      },
+      "x402": {
+        "resource": "https://bare-cedar-fog.561.group/x402/data/write",
+        "readResource": "https://bare-cedar-fog.561.group/x402/data/read",
+        "offer": "https://bare-cedar-fog.561.group/x402/data/offer",
+        "facilitator": "https://bare-cedar-fog.561.group/x402/facilitator",
+        "scheme": "exact",
+        "network": "eip155:5615610",
+        "asset": "0x8AbF0f67745e0F64818157f7D3f18e0DA5b64fb1",
+        "payTo": "0xfDb2D721fCbd9F547Fc5363f9F91142C486c17CA",
+        "amount": "1000",
+        "readAmount": "100",
+        "storage": {
+          "standard": "ERC-5219",
+          "contract": "0x35D53D38B7603B73D76F4c1Dc1e95ECCd8631e58",
+          "namespace": "paid-data"
+        }
+      },
+      "evm": {
+        "network": "eip155:5615610",
+        "account": "eip155:5615610:0xfDb2D721fCbd9F547Fc5363f9F91142C486c17CA"
+      }
+    }
+  }
+}

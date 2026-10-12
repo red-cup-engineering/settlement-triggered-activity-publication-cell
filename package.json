@@ -1,0 +1,37 @@
+{
+  "name": "@red-cup-engineering/settlement-triggered-activity-publication-cell",
+  "version": "0.1.2",
+  "type": "module",
+  "description": "Advances one durable ActivityPub pulse from one independently finalized commitment on a configured EVM chain.",
+  "bin": {
+    "advance-settlement-pulse": "./scripts/advance-settlement-pulse.mjs",
+    "serve-settlement-pulse-activitypub": "./scripts/activitypub-server.mjs",
+    "serve-settlement-pulse-x402": "./scripts/x402-server.mjs"
+  },
+  "exports": {
+    ".": "./src/advance-settlement-pulse.mjs",
+    "./runtime": "./src/runtime.mjs",
+    "./successor-activation": "./src/successor-activation.mjs"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@cfworker/json-schema": "4.1.1",
+    "@fedify/vocab": "2.3.1",
+    "@red-cup-engineering/activitypub-server": "workspace:*",
+    "@red-cup-engineering/activitypub-services-section": "workspace:*",
+    "@red-cup-engineering/javascript-node-services-section": "workspace:*",
+    "@red-cup-engineering/uri-services-section": "workspace:*",
+    "@red-cup-engineering/witness-journal-document-service": "workspace:*",
+    "@red-cup-engineering/x402-services-section": "workspace:*",
+    "express": "5.2.1",
+    "@red-cup-engineering/computer-networking-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/x402-exact-purchase-service": "workspace:*",
+    "@red-cup-engineering/signgraph": "workspace:*",
+    "@red-cup-engineering/computer-content-address-engineering-services-section": "workspace:*"
+  }
+}
