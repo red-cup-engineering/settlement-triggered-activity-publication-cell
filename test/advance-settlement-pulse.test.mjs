@@ -188,3 +188,74 @@ test("foreign chains, nonfinal assays, coordinate mismatches, and regressions ar
     /regress/u,
   );
 });
+
+test("completed pulse replay is bound to exact commitment and recipient, not only an EVM coordinate", async () => {
+  const book = memory();
+  let publications = 0;
+  const publish = async (activity) => {
+    publications++;
+    return {type: "ActivityPubDeliveryReceipt", delivered: true, activity: activity.id};
+  };
+  await advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish});
+  assert.equal(book.records.length, 2);
+  for (const altered of [
+    demand({commitment: {...demand().commitment, evidenceRoot: NI_C}}),
+    demand({commitment: {...demand().commitment, subject: NI_A}}),
+    demand({recipient: "https://another.example.test/actors/receiver"}),
+    demand({actor: "https://another.example.test/actors/publisher"}),
+  ]) {
+    await assert.rejects(
+      advanceSettlementPulse(altered, {...CONFIG, history: book.records, append: book.append, publish}),
+      /completed settlement pulse receipt conflicts/u,
+    );
+  }
+  assert.equal(publications, 1, "replayed contradictory assertions must not publish");
+  assert.equal(book.records.length, 2, "replayed contradictory assertions must not append");
+});
+
+test("an ambiguous first publication cannot have its pending intent repurposed", async () => {
+  const book = memory();
+  let publications = 0;
+  const publish = async (activity) => {
+    publications++;
+    if (publications === 1) throw new Error("transport unknown");
+    return {type: "ActivityPubDeliveryReceipt", delivered: true, activity: activity.id};
+  };
+  await assert.rejects(
+    advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish}),
+    /transport unknown/u,
+  );
+  assert.equal(book.records.length, 1);
+  await assert.rejects(
+    advanceSettlementPulse(
+      demand({commitment: {...demand().commitment, object: NI_C}}),
+      {...CONFIG, history: book.records, append: book.append, publish},
+    ),
+    /settlement pulse intent conflicts/u,
+  );
+  assert.equal(publications, 1, "no altered notification should be sent on retry");
+  assert.equal(book.records.length, 1);
+  const valid = await advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish});
+  assert.equal(valid.status, "delivered");
+  assert.equal(publications, 2);
+});
+
+test("incomplete delivery receipts and cross-chain history refuse replay", async () => {
+  const book = memory();
+  const publish = async (activity) => ({
+    type: "ActivityPubDeliveryReceipt", delivered: true, activity: activity.id,
+  });
+  await advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish});
+  const oldDelivery = book.records[1].delivery;
+  book.records[1].delivery = {...oldDelivery, activity: "https://other.example.test/different"};
+  await assert.rejects(
+    advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish}),
+    /completed settlement pulse receipt conflicts/u,
+  );
+  book.records[1].delivery = oldDelivery;
+  book.records[1].coordinate.chain = "eip155:999";
+  await assert.rejects(
+    advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish}),
+    /settlement history crosses configured chain/u,
+  );
+});
