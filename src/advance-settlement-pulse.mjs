@@ -110,6 +110,7 @@ export async function advanceSettlementPulse(demand, options = {}) {
   const expectedActivity = activityFor(demand, coordinate);
   const intents = history.filter(({ type }) => type === "SettlementPulsePublicationIntent");
   const receipts = history.filter(({ type }) => type === "SettlementPulsePublicationReceipt");
+  let completed = null;
 
   for (const receipt of receipts) {
     const order = compareCoordinate(receipt.coordinate, coordinate);
@@ -120,7 +121,8 @@ export async function advanceSettlementPulse(demand, options = {}) {
           || receipt.delivery?.delivered !== true || receipt.delivery.activity !== receipt.activityId) {
         throw new Error("completed settlement pulse receipt conflicts with exact commitment or delivery");
       }
-      return Object.freeze(assertOutput({ status: "already-delivered", activity: Object.freeze(receipt.activity), receipt: receipt.delivery }));
+      if (completed !== null) throw new Error("duplicate completed settlement pulse receipt for one coordinate");
+      completed = receipt;
     }
   }
 
@@ -133,6 +135,11 @@ export async function advanceSettlementPulse(demand, options = {}) {
   if (priorIntents.some((intent) => intent.activityId !== activity.id
       || !isDeepStrictEqual(intent.activity, activity))) {
     throw new Error("settlement pulse intent conflicts with exact commitment or recipient");
+  }
+  if (completed !== null) {
+    return Object.freeze(assertOutput({
+      status: "already-delivered", activity: Object.freeze(completed.activity), receipt: completed.delivery,
+    }));
   }
   const priorIntent = priorIntents[0];
   if (!priorIntent) {
