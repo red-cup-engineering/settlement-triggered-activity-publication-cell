@@ -259,3 +259,30 @@ test("incomplete delivery receipts and cross-chain history refuse replay", async
     /settlement history crosses configured chain/u,
   );
 });
+
+test("one block and log index cannot alias two distinct transaction hashes", async () => {
+  const book = memory();
+  const publish = async (activity) => ({delivered: true, activity: activity.id});
+  await advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish});
+  book.records[1].coordinate.transactionHash = HASH_B;
+  await assert.rejects(
+    advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish}),
+    /settlement coordinate transaction conflicts at one log index/u,
+  );
+});
+
+test("an existing activity identifier cannot be republished using a different coordinate", async () => {
+  const book = memory();
+  await assert.rejects(
+    advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append,
+      publish: async () => { throw new Error("unknown delivery"); }}),
+    /unknown delivery/u,
+  );
+  book.records[0].coordinate.transactionHash = HASH_B;
+  await assert.rejects(
+    advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append,
+      publish: async () => assert.fail("must not publish ID with conflicting coordinate")}),
+    /settlement pulse activity ID collides with another coordinate/u,
+  );
+  assert.equal(book.records.length, 1);
+});
