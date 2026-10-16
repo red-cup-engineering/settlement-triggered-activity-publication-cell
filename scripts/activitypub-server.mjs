@@ -11,7 +11,7 @@ import {
 } from "../src/runtime.mjs";
 import { requireActiveSuccessorRecord } from "@red-cup-engineering/x402-exact-purchase-service/successor-deployment";
 import { loadSuccessorAccountBinding } from "@red-cup-engineering/x402-exact-purchase-service/successor-deployment";
-import { runJavascriptNodeOperation } from "../../../../../../computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-node-services-section/src/operation.mjs";
+import { runJavascriptNodeOperation } from "@red-cup-engineering/javascript-node-operation-engineering-services-section/operation";
 import { ACTIVITYSTREAMS_PUBLIC } from "@red-cup-engineering/activitypub-services-section/activitystreams";
 
 function requiredEnvironment(name) {
