@@ -1,3 +1,5 @@
+import { isDeepStrictEqual } from "node:util";
+
 const HASH = /^0x[0-9a-fA-F]{64}$/u;
 const CHAIN = /^eip155:[1-9][0-9]*$/u;
 const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;
@@ -26,6 +28,11 @@ function sameCoordinate(left, right) {
 }
 
 function compareCoordinate(left, right) {
+  if (left?.chain !== right.chain) throw new Error("settlement history crosses configured chain");
+  exactInteger(left.blockNumber, "history blockNumber");
+  exactHash(left.blockHash, "history blockHash");
+  exactHash(left.transactionHash, "history transactionHash");
+  exactInteger(left.logIndex, "history logIndex");
   if (left.blockNumber !== right.blockNumber) return left.blockNumber - right.blockNumber;
   if (left.blockHash !== right.blockHash) throw new Error("settlement coordinate conflicts at one block height");
   return left.logIndex - right.logIndex;
@@ -96,6 +103,9 @@ export async function advanceSettlementPulse(demand, options = {}) {
   const history = Array.isArray(options.history) ? options.history : [];
   const append = requiredFunction(options.append, "append");
   const publish = requiredFunction(options.publish, "publish");
+  // A blockchain coordinate alone is not the identity of the published
+  // assertion; bind every replay to the particular recipient and commitment.
+  const expectedActivity = activityFor(demand, coordinate);
   const intents = history.filter(({ type }) => type === "SettlementPulsePublicationIntent");
   const receipts = history.filter(({ type }) => type === "SettlementPulsePublicationReceipt");
 
@@ -103,16 +113,22 @@ export async function advanceSettlementPulse(demand, options = {}) {
     const order = compareCoordinate(receipt.coordinate, coordinate);
     if (order > 0) throw new Error("settlement cursor would regress");
     if (order === 0) {
-      if (receipt.activity?.id === undefined || receipt.activity.id !== receipt.activityId) {
-        throw new Error("completed settlement pulse receipt is incomplete");
+      if (receipt.activity?.id !== receipt.activityId
+          || !isDeepStrictEqual(receipt.activity, expectedActivity)
+          || receipt.delivery?.delivered !== true || receipt.delivery.activity !== receipt.activityId) {
+        throw new Error("completed settlement pulse receipt conflicts with exact commitment or delivery");
       }
       return Object.freeze(assertOutput({ status: "already-delivered", activity: Object.freeze(receipt.activity), receipt: receipt.delivery }));
     }
   }
 
-  const priorIntent = intents.find((intent) => sameCoordinate(intent.coordinate, coordinate));
-  const activity = priorIntent?.activity ?? activityFor(demand, coordinate);
-  if (priorIntent && priorIntent.activityId !== activity.id) throw new Error("settlement pulse intent identity drifted");
+  const priorIntents = intents.filter((intent) => sameCoordinate(intent.coordinate, coordinate));
+  const activity = expectedActivity;
+  if (priorIntents.some((intent) => intent.activityId !== activity.id
+      || !isDeepStrictEqual(intent.activity, activity))) {
+    throw new Error("settlement pulse intent conflicts with exact commitment or recipient");
+  }
+  const priorIntent = priorIntents[0];
   if (!priorIntent) {
     await append(Object.freeze({
       type: "SettlementPulsePublicationIntent",
