@@ -286,3 +286,20 @@ test("an existing activity identifier cannot be republished using a different co
   );
   assert.equal(book.records.length, 1);
 });
+
+test("a duplicate completed receipt or contradictory earlier intent prevents replay acknowledgement", async () => {
+  const book = memory();
+  const publish = async activity => ({delivered: true, activity: activity.id});
+  await advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish});
+  book.records.push(structuredClone(book.records[1]));
+  await assert.rejects(
+    advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish}),
+    /duplicate completed settlement pulse receipt/u,
+  );
+  book.records.pop();
+  book.records[0].activity.object.commitment.subject = NI_A;
+  await assert.rejects(
+    advanceSettlementPulse(demand(), {...CONFIG, history: book.records, append: book.append, publish}),
+    /settlement pulse intent conflicts with exact commitment/u,
+  );
+});
