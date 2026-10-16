@@ -35,6 +35,8 @@ function compareCoordinate(left, right) {
   exactInteger(left.logIndex, "history logIndex");
   if (left.blockNumber !== right.blockNumber) return left.blockNumber - right.blockNumber;
   if (left.blockHash !== right.blockHash) throw new Error("settlement coordinate conflicts at one block height");
+  if (left.logIndex === right.logIndex && left.transactionHash !== right.transactionHash)
+    throw new Error("settlement coordinate transaction conflicts at one log index");
   return left.logIndex - right.logIndex;
 }
 
@@ -122,8 +124,12 @@ export async function advanceSettlementPulse(demand, options = {}) {
     }
   }
 
-  const priorIntents = intents.filter((intent) => sameCoordinate(intent.coordinate, coordinate));
   const activity = expectedActivity;
+  if (intents.some((intent) => (intent.activityId === activity.id || intent.activity?.id === activity.id)
+      && !sameCoordinate(intent.coordinate, coordinate))) {
+    throw new Error("settlement pulse activity ID collides with another coordinate");
+  }
+  const priorIntents = intents.filter((intent) => sameCoordinate(intent.coordinate, coordinate));
   if (priorIntents.some((intent) => intent.activityId !== activity.id
       || !isDeepStrictEqual(intent.activity, activity))) {
     throw new Error("settlement pulse intent conflicts with exact commitment or recipient");
