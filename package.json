@@ -3,6 +3,11 @@
   "version": "0.1.2",
   "type": "module",
   "description": "Advances one durable ActivityPub pulse from one independently finalized commitment on a configured EVM chain.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-systems-engineering-services-section.git",
+    "directory": "services/computer-blockchain-system-services-section/services/settlement-triggered-activity-publication-cell"
+  },
   "bin": {
     "advance-settlement-pulse": "./scripts/advance-settlement-pulse.mjs",
     "serve-settlement-pulse-activitypub": "./scripts/activitypub-server.mjs",
