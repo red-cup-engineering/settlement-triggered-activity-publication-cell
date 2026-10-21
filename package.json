@@ -30,5 +30,14 @@
     "@red-cup-engineering/witness-journal-rdf-projection-service": "1.1.0",
     "@fedify/vocab": "2.3.1",
     "express": "5.2.1"
+  },
+  "license": "MIT",
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/561-group/.github/blob/main/TIPS.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/settlement-triggered-activity-publication-cell.git"
   }
 }
