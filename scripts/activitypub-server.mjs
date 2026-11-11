@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { readFile } from "node:fs/promises";
-import { serveActivityPubProvider } from "@red-cup-engineering/activitypub-services-section/server";
+import { serveActivityPubProvider } from "@red-cup-engineering/activitypub-server";
 import {
   ACTIVITYSTREAMS_PUBLIC,
   materializeRmnActivity,
