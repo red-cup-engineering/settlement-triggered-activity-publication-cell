@@ -1,0 +1,32 @@
+{
+  "type": "HistoricalChainProjectionArchive",
+  "historical": true,
+  "chain": "eip155:5615610",
+  "recordKind": "enterprise-account-binding",
+  "source": "content/evm/accounts/eip155-5615610.json",
+  "record": {
+    "profile": "org.emsenn.evm.sovereign-enterprise-account.v3",
+    "enterprise": {
+      "nodeId": "settlement-triggered-activity-publication-cell",
+      "urn": "urn:ame:settlement-triggered-activity-publication-cell",
+      "enterpriseId": "0xb7bb294f0c2038ca6baf6b98ea12a2b933ca5732df593069cebf6904d52a7692"
+    },
+    "chain": {
+      "chainId": 5615610,
+      "caip2": "eip155:5615610"
+    },
+    "account": {
+      "address": "0xfDb2D721fCbd9F547Fc5363f9F91142C486c17CA",
+      "caip10": "eip155:5615610:0xfDb2D721fCbd9F547Fc5363f9F91142C486c17CA",
+      "kind": "eoa-alpha"
+    },
+    "policy": {
+      "signer": "0xfDb2D721fCbd9F547Fc5363f9F91142C486c17CA",
+      "custody": "cold-red-gate-encrypted-keystore"
+    },
+    "deployment": {
+      "transaction": "0x33b8c3f0ac9b02d041693c646790fb85e8e932a66bb3695d820d07630a0bd38a",
+      "block": 126
+    }
+  }
+}
