@@ -87,10 +87,10 @@ export async function advanceWithHiredProviders(demand, {
           activity,
         }));
       }
-      const retained = (await history.records()).find(
+      const kept = (await history.records()).find(
         (record) => record?.type === OUTBOX_RECORD_TYPE && exactActivity(record.activity, activity),
       );
-      if (retained === undefined) throw new Error("ActivityPub outbox provider did not retain the exact activity");
+      if (kept === undefined) throw new Error("ActivityPub outbox provider did not retain the exact activity");
       return Object.freeze({
         type: "ActivityPubOutboxPublicationReceipt",
         delivered: true,

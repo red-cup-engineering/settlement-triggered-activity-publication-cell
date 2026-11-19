@@ -68,11 +68,11 @@ export function settlementCoordinate(demand, { expectedChain } = {}) {
   if (!CHAIN.test(expectedChain ?? "")) throw new TypeError("expectedChain must be an EVM CAIP-2 identifier");
   if (demand?.type !== "SettlementTriggeredActivityPublicationDemand") throw new TypeError("one settlement-triggered publication demand is required");
   if (demand.chain !== expectedChain) throw new Error(`demand must address configured chain ${expectedChain}`);
-  const assay = demand.finalityAssay;
-  const result = assay?.result;
-  if (assay?.type !== "ReceiptFinalityPolicyAssay"
-      || assay.positiveEvidence !== true
-      || assay.negativeEvidence === true
+  const check = demand.finalityAssay;
+  const result = check?.result;
+  if (check?.type !== "ReceiptFinalityPolicyAssay"
+      || check.positiveEvidence !== true
+      || check.negativeEvidence === true
       || result?.positiveEvidence !== true
       || result?.negativeEvidence === true) {
     throw new Error("an independently positive finality assay is required");
@@ -109,20 +109,20 @@ export async function advanceSettlementPulse(demand, options = {}) {
   // assertion; bind every replay to the particular recipient and commitment.
   const expectedActivity = activityFor(demand, coordinate);
   const intents = history.filter(({ type }) => type === "SettlementPulsePublicationIntent");
-  const receipts = history.filter(({ type }) => type === "SettlementPulsePublicationReceipt");
+  const records = history.filter(({ type }) => type === "SettlementPulsePublicationReceipt");
   let completed = null;
 
-  for (const receipt of receipts) {
-    const order = compareCoordinate(receipt.coordinate, coordinate);
+  for (const record of records) {
+    const order = compareCoordinate(record.coordinate, coordinate);
     if (order > 0) throw new Error("settlement cursor would regress");
     if (order === 0) {
-      if (receipt.activity?.id !== receipt.activityId
-          || !isDeepStrictEqual(receipt.activity, expectedActivity)
-          || receipt.delivery?.delivered !== true || receipt.delivery.activity !== receipt.activityId) {
+      if (record.activity?.id !== record.activityId
+          || !isDeepStrictEqual(record.activity, expectedActivity)
+          || record.delivery?.delivered !== true || record.delivery.activity !== record.activityId) {
         throw new Error("completed settlement pulse receipt conflicts with exact commitment or delivery");
       }
       if (completed !== null) throw new Error("duplicate completed settlement pulse receipt for one coordinate");
-      completed = receipt;
+      completed = record;
     }
   }
 
