@@ -88,26 +88,26 @@ function exactEconomic(binding, deployment, account) {
   });
 }
 
-function attachedSignature(record, payload, controller) {
-  if (record === undefined) return Object.freeze({ status: "unsigned-candidate", payload, receipts: [] });
-  const signature = record?.signature;
+function attachedSignature(receipt, payload, controller) {
+  if (receipt === undefined) return Object.freeze({ status: "unsigned-candidate", payload, receipts: [] });
+  const signature = receipt?.signature;
   const signaturePresent = typeof signature === "string" ? signature !== ""
     : signature !== null && typeof signature === "object" && !Array.isArray(signature)
       && typeof signature.protected === "string" && signature.protected !== ""
       && typeof signature.signature === "string" && signature.signature !== "";
-  if (record?.type !== "DetachedContentSigningReceipt" || record?.version !== 1
-      || record?.disposition !== "signed" || record?.payload !== payload
-      || record?.controller?.toLowerCase() !== controller.toLowerCase()
-      || record?.verification?.disposition !== "verified"
-      || !NI.test(record?.id ?? "") || typeof record?.algorithm !== "string"
-      || record.algorithm === "" || typeof record?.keyId !== "string" || record.keyId === ""
+  if (receipt?.type !== "DetachedContentSigningReceipt" || receipt?.version !== 1
+      || receipt?.disposition !== "signed" || receipt?.payload !== payload
+      || receipt?.controller?.toLowerCase() !== controller.toLowerCase()
+      || receipt?.verification?.disposition !== "verified"
+      || !NI.test(receipt?.id ?? "") || typeof receipt?.algorithm !== "string"
+      || receipt.algorithm === "" || typeof receipt?.keyId !== "string" || receipt.keyId === ""
       || !signaturePresent) {
     throw new TypeError("signing receipt must be a real detached receipt for this exact payload and controller");
   }
-  return Object.freeze({ status: "signed", payload, receipts: [structuredClone(record)] });
+  return Object.freeze({ status: "signed", payload, receipts: [structuredClone(receipt)] });
 }
 
-export function projectSettlementSuccessorActivation({ deployment, accountBinding, x402Binding, agentCardTemplate, offerSigningReceipt: offerSigningRecord } = {}) {
+export function projectSettlementSuccessorActivation({ deployment, accountBinding, x402Binding, agentCardTemplate, offerSigningReceipt } = {}) {
   const successor = exactDeployment(deployment);
   const account = exactAccount(accountBinding, successor);
   const economic = exactEconomic(x402Binding, successor, account);
@@ -134,7 +134,7 @@ export function projectSettlementSuccessorActivation({ deployment, accountBindin
       amount: economic.amount, payTo: economic.payTo, facilitator: economic.facilitatorUrl,
       extra: { name: economic.assetName, version: economic.assetVersion } } };
   const offerId = contentAddress(offerPayload);
-  const offer = Object.freeze({ id: offerId, ...offerPayload, signing: attachedSignature(offerSigningRecord, offerId, account.controller) });
+  const offer = Object.freeze({ id: offerId, ...offerPayload, signing: attachedSignature(offerSigningReceipt, offerId, account.controller) });
   const card = structuredClone(agentCardTemplate);
   card.description = card.description.replace(" Active settlement is unavailable until the recorded eip155:5615611 identity migration is completed.", "");
   for (const extension of card.capabilities?.extensions ?? []) {

@@ -26,5 +26,5 @@ function assertContract(kind, value) {
 
 export const assertInput = (value) => assertContract("input", value);
 export const assertOutput = (value) => assertContract("output", value);
-export const assertRejection = (value) => assertContract("refusal", value);
+export const assertRefusal = (value) => assertContract("refusal", value);
 export const assertState = (value) => assertContract("state", value);

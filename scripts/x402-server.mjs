@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import express from "express";
 import { createPricedCapabilityBoundary } from "@red-cup-engineering/x402-engineering-services-section/priced-capability-boundary";
 import { settlementCoordinate } from "../src/advance-settlement-pulse.mjs";
-import { assertRejection } from "../src/contracts.mjs";
+import { assertRefusal } from "../src/contracts.mjs";
 import { advanceWithHiredProviders, createPulseHistory } from "../src/runtime.mjs";
 import {
   loadSuccessorAccountBinding,
@@ -110,12 +110,12 @@ export async function main() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ sturdyRef: matched[1], locus: operation }),
       });
-      const validation = await response.json();
-      if (!response.ok || validation?.admitted !== true) {
-        throw new Error(`OCapN provider refused: ${validation?.reason ?? response.status}`);
+      const admission = await response.json();
+      if (!response.ok || admission?.admitted !== true) {
+        throw new Error(`OCapN provider refused: ${admission?.reason ?? response.status}`);
       }
-      await history.append({ type: "OCapNAdmissionReceipt", operation, admission: validation });
-      return validation;
+      await history.append({ type: "OCapNAdmissionReceipt", operation, admission });
+      return admission;
     },
     createIntent: ({ invocation, request }) => {
       settlementCoordinate(request, { expectedChain: network });
@@ -126,7 +126,7 @@ export async function main() {
       history,
     }),
     createReceipt: ({ invocation, result }) => ({ type: "X402PaidExecutionReceipt", invocation, result }),
-    createRefusal: ({ invocation, error }) => assertRejection({
+    createRefusal: ({ invocation, error }) => assertRefusal({
       type: "X402PaidExecutionRefusal",
       invocation,
       reason: error instanceof Error ? error.message : String(error),
