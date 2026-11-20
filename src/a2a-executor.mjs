@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+import { identity } from "@red-cup-engineering/signcell/values";
 
 import { randomUUID } from "node:crypto";
 import { messageFromJson, messageToJson } from "@red-cup-engineering/a2a-engine/json-wire";
-import { ROLE_AGENT, ROLE_USER, extractSenPart, parseA2aMessage, senPart } from "@red-cup-engineering/a2a-engine/sen-part";
+import { ROLE_AGENT, ROLE_USER, extractSenPart, senPart } from "@red-cup-engineering/a2a-engine/sen-part";
 import {
   EMPTY_WITNESS_ROOT,
   admitJsonSemanticContent,
@@ -22,7 +23,7 @@ const DEMAND_KIND = "settlement-triggered-activity-publication.demand";
 const RESULT_KIND = "settlement-triggered-activity-publication.result";
 
 function demandFromMessage(source) {
-  const message = parseA2aMessage(source);
+  const message = identity(source);
   if (message.role !== ROLE_USER) throw new TypeError("A2A demand requires ROLE_USER");
   const { bytes } = extractSenPart(message.parts);
   return admitJsonSemanticContent({ bytes, objectKind: DEMAND_KIND }).value;
