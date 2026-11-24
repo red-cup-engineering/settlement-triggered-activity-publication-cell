@@ -1,0 +1,27 @@
+{
+  "type": "HistoricalChainProjectionArchive",
+  "historical": true,
+  "chain": "eip155:5615610",
+  "recordKind": "capability-offer",
+  "source": "content/offers/current.json",
+  "record": {
+    "kind": "org.emsenn.capability-offer.v3",
+    "cell": "ni:///sha-256;Sru5ZrHDT4qtByN8UQCPMKfk4-lTQpE0fI0aAWvfo-4",
+    "sku": "ni:///sha-256;xD99GvwJPkbs6UJMrhJp9PxibQhlJl8GX7OD2Xd1shA",
+    "provider": "urn:ame:settlement-triggered-activity-publication-cell",
+    "operation": "advance-settlement-pulse",
+    "law": "ni:///sha-256;AHba3pV5BY37sxRkdxVr4w81cAJSz_UWcalPZpkqf64",
+    "agentCard": "https://bare-cedar-fog.561.group/a2a/settlement-pulse/.well-known/agent-card.json",
+    "authorization": {
+      "profile": "OCapN",
+      "grantRequired": true
+    },
+    "price": {
+      "protocol": "x402",
+      "asset": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      "amount": "12",
+      "network": "eip155:5615610"
+    },
+    "expiresAt": "2027-07-25T00:00:00.000Z"
+  }
+}

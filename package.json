@@ -1,0 +1,45 @@
+{
+  "name": "@red-cup-engineering/settlement-triggered-activity-publication-cell",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "description": "Advances one durable ActivityPub pulse from one independently finalized commitment on a configured EVM chain.",
+  "bin": {
+    "advance-settlement-pulse": "./scripts/advance-settlement-pulse.mjs",
+    "serve-settlement-pulse-activitypub": "./scripts/activitypub-server.mjs",
+    "serve-settlement-pulse-x402": "./scripts/x402-server.mjs"
+  },
+  "exports": {
+    ".": "./src/advance-settlement-pulse.mjs",
+    "./runtime": "./src/runtime.mjs",
+    "./successor-activation": "./src/successor-activation.mjs"
+  },
+  "scripts": {
+    "verify": "node --check src/contracts.mjs && node --check src/advance-settlement-pulse.mjs && node --check src/runtime.mjs && node --check src/successor-deployment.mjs && node --check src/successor-activation.mjs && node --check src/a2a-executor.mjs && node --check scripts/advance-settlement-pulse.mjs && node --check scripts/activitypub-server.mjs && node --check scripts/x402-server.mjs && node --check scripts/project-successor-cutover-records.mjs && node --check scripts/project-successor-activation-records.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@cfworker/json-schema": "4.1.1",
+    "@red-cup-engineering/x402-engineering-services-section": "^0.14.1",
+    "express": "5.2.1",
+    "@red-cup-engineering/activitypub-server": "^0.2.0",
+    "@red-cup-engineering/activitypub-engineering-services-section": "^0.11.13",
+    "@red-cup-engineering/semiotic-eavt-engineering-services-section": "0.6.10",
+    "@red-cup-engineering/a2a-engine": "^0.1.3",
+    "@red-cup-engineering/computer-code-engine": "^0.1.9",
+    "@red-cup-engineering/uri-engineering-services-section": "^0.1.8",
+    "@red-cup-engineering/signcell": "^0.18.0 || 0.18.1-dev.0",
+    "@red-cup-engineering/parse-javascript-argv-service": "^0.3.0 || 0.3.1-dev.0"
+  },
+  "license": "MIT",
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/561-group/.github/blob/main/TIPS.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/settlement-triggered-activity-publication-cell.git"
+  }
+}
