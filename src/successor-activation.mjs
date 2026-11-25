@@ -1,4 +1,5 @@
-import { makeNiUri as rawNiUri } from "@red-cup-engineering/uri-engineering-services-section/ni-uri";
+import { canonicalJson } from "@red-cup-engineering/json-engine/canonical-json";
+import { makeNiUri as rawNiUri } from "@red-cup-engineering/semiotic-content-address-system";
 
 const CHAIN = "eip155:5615611";
 const NODE = "settlement-triggered-activity-publication-cell";
@@ -7,16 +8,9 @@ const ADDRESS = /^0x[0-9a-fA-F]{40}$/u;
 const HASH = /^0x[0-9a-fA-F]{64}$/u;
 const NI = /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u;
 
-function stable(value) {
-  if (Array.isArray(value)) return value.map(stable);
-  if (value !== null && typeof value === "object") {
-    return Object.fromEntries(Object.keys(value).sort().map((key) => [key, stable(value[key])]));
-  }
-  return value;
-}
 
 export function contentAddress(value) {
-  return rawNiUri(JSON.stringify(stable(value)));
+  return rawNiUri(canonicalJson(value));
 }
 
 function exactDeployment(deployment) {
